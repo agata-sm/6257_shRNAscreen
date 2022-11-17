@@ -135,8 +135,8 @@ workflow {
 
 	//read processing
 	idx_bowtie_ch=idx.out.idx_bowtie_ch
-	//mapPE(idx_bowtie_ch, read_pairs)
-	mapPE(read_pairs)
+	mapPE(idx_bowtie_ch, read_pairs)
+	//mapPE(read_pairs)
 
 
 	//QC

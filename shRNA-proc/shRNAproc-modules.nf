@@ -78,7 +78,7 @@ process mapPE {
     label 'mid_mem'
 
     input:
-    //path idx_bowtie_ch
+    path idx_bowtie_ch
     tuple val(pair_id), path(reads)
 
     output:
@@ -86,15 +86,7 @@ process mapPE {
 
     script:
     """
-    #echo $r1fq
-    #wc -l $r1fq
-    #echo $r2fq
-    #wc -l $r2fq
-
-    touch ${pair_id}.mapped.bowtie2.bam
-
     bowtie2 -p 4 -a --very-sensitive --dovetail --fr -x $idx_bowtie_ch -q -1 $reads[0] -2 $reads[1]  | samtools view -hbo ${pair_id}.mapped.bowtie2.bam -
-    
     """
 }
 
