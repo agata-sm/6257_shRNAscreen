@@ -86,7 +86,7 @@ process mapPE {
 
     script:
     """
-    bowtie2 -p 4 -a --very-sensitive --dovetail --fr -x $idx_bowtie -q -1 $r1fq -2 $r2fq  | samtools view -hbo ${pair_id}.mapped.bowtie2.bam -
+    bowtie2 -p 4 -a --very-sensitive --dovetail --fr -x $idx_bowtie_ch -q -1 $r1fq -2 $r2fq  | samtools view -hbo ${pair_id}.mapped.bowtie2.bam -
     """
 }
 
