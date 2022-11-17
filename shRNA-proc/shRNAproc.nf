@@ -135,8 +135,26 @@ workflow {
 
 	//read processing
 	idx_bowtie_ch=idx.out.idx_bowtie_ch
-	mapPE(idx_bowtie_ch, read_pairs)
+	
+	map_readsPE_ch=read_pairs
+		map_readsPE_ch
+			.combine(idx_bowtie_ch)
+			.view()
+			.set {map_readsPE_ch}
+
+	//mapPE(map_readsPE_ch)
+	
+	//mapPE(idx_bowtie_ch, read_pairs)
 	//mapPE(read_pairs)
+
+
+	// mageck contrasts RSL
+	cntRSL_ch=filter_RSL.out.rsl_countstable_filt_ch
+	 	cntRSL_ch
+	 		.combine(prep_library_files.out.lib_gmt_ch)
+	 		.combine(comparisons_ch)
+	 		.view()
+	 		.set { cntRSL_ch }
 
 
 	//QC
