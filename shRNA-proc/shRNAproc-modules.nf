@@ -1,5 +1,7 @@
-// modules for minimal.nf
+// modules for shRNA-proc.nf
 
+
+// outdirs
 
 params.fastqc="FastQC"
 params.fastqcOut="${params.outdir}/${params.fastqc}"
@@ -7,10 +9,16 @@ params.fastqcOut="${params.outdir}/${params.fastqc}"
 params.multiqc="MultiQC"
 params.multiqcOut="${params.outdir}/${params.multiqc}"
 
+params.idx="Bowtie2-idx"
+params.idxOut="${params.outdir}/${params.idx}"
+
+params.map="mappedPE"
+params.mapOut="${params.outdir}/${params.map}"
 
 
-// assets
-//params.countertemplate="${projectDir}/assets/template.properties"
+
+
+
 
 
 // scripts
@@ -37,7 +45,7 @@ process fastqc {
     script:
     """
     echo "fastqc $fastqfile"
-    fastqc $fastqr1
+    fastqc $fastqfile
 
     echo "Software versions for ${params.pipelinename}" >${params.verfile}
     date >>${params.verfile}
@@ -48,23 +56,59 @@ process fastqc {
 }
 
 
-process multiqc {
-    publishDir params.multiqcOut, mode:'copy'
+process idx {
+    publishDir params.idxOut, mode:'copy'
     label 'small'
 
 
     input:
-    file ('fastqc/*') from fastqc_report_ch
+    path shFasta
 
     output:
-    file "multiqc_report.html" into multiqc_report
-    file "multiqc_data"
+    path 'shRNA_Idx_bowtie2*' into idx_bowtie
+
+    script:
+    """
+    bowtie2-build -f $shFasta shRNA_Idx_bowtie2
+    """
+}
+
+
+process mapPE {
+    publishDir params.mapOut, mode:'copy'
+    label 'small'
+
+    input:
+    path idx_bowtie
+
+    output:
+
+    script:
+    """
+    echo $idx_bowtie
+    """
+}
+
+
+process multiqc {
+    publishDir params.multiqcOut, mode:'copy'
+
+    label 'small'
+
+
+    input:
+    path fastqc_report
+    
+    output:
+    path "multiqc_report.html"
+    path "multiqc_data"
 
     script:
     """
     multiqc .
     """
 }
+
 
 
 

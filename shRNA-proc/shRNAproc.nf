@@ -101,7 +101,10 @@ fastqr1_chPE= Channel.fromPath(params.fastqPE , checkIfExists:true)
 	    .view()
 	    .set { fastqr1_chPE }
 
-
+read_pairs = Channel.fromFilePairs(params.fastqPE, checkIfExists: true )
+	read_pairs
+	    .view()
+	    .set { read_pairs }
 
 // fastq file paths channel - paths
 fastqr1_ch2= Channel.fromPath(params.fastq , checkIfExists:true)
@@ -110,9 +113,12 @@ fastqr1_ch2= Channel.fromPath(params.fastq , checkIfExists:true)
 	    .set { fastqr1_ch2 }
 
 
+// fa for index
+fa_ch=Channel.fromPath(params.shLibraryFa , checkIfExists:true)
+
 /////////////////////////////
 // processes
-include { fastqc; multiqc } from './shRNAproc-modules.nf'
+include { fastqc; multiqc; idx } from './shRNAproc-modules.nf'
 
 
 
@@ -123,12 +129,18 @@ include { fastqc; multiqc } from './shRNAproc-modules.nf'
 
 workflow {
 
+	//index
+	idx(fa_ch)
+
+	//read processing
+	idx_ch=idx.out.idx_bowtie
+
 	//QC
-	//fastqc(fastqr1_ch2).ifEmpty([])
+	fastqc(fastqr1_ch2)
 
 	//multiQC
-	//multiqc_ch=fastqc.out.fastqc_report_ch
-	//multiqc(multiqc_ch.collect()).ifEmpty([])
+	multiqc_ch=fastqc.out.fastqc_report_ch
+	multiqc(multiqc_ch.collect())
 
 }
 
