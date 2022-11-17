@@ -107,10 +107,10 @@ read_pairs = Channel.fromFilePairs(params.fastqPE, checkIfExists: true )
 	    .set { read_pairs }
 
 // fastq file paths channel - paths
-fastqr1_ch2= Channel.fromPath(params.fastq , checkIfExists:true)
-	fastqr1_ch2
+//fastqr1_ch2= Channel.fromPath(params.fastq , checkIfExists:true)
+//	fastqr1_ch2
 	    //.view()
-	    .set { fastqr1_ch2 }
+//	    .set { fastqr1_ch2 }
 
 
 // fa for index
@@ -134,7 +134,7 @@ workflow {
 
 	//read processing
 	idx_bowtie_ch=idx.out.idx_bowtie_ch
-	mapPE(idx_bowtie_ch, fastqr1_chPE)
+	mapPE(idx_bowtie_ch, read_pairs)
 
 	//QC
 	fastqc(fastqr1_ch2)
