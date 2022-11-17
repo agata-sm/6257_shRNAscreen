@@ -32,7 +32,6 @@ params.verfile="software.versions"
 
 process fastqc {
     publishDir params.fastqcOut, mode:'copy'
-
     label 'small'
 
     input:
@@ -47,10 +46,10 @@ process fastqc {
     echo "fastqc $fastqfile"
     fastqc $fastqfile
 
-    echo "Software versions for ${params.pipelinename}" >${params.verfile}
-    date >>${params.verfile}
-    echo "process ** fastqc **" >>${params.verfile}
-    fastqc -v >>${params.verfile}
+    #echo "Software versions for ${params.pipelinename}" >${params.verfile}
+    #date >>${params.verfile}
+    #echo "process ** fastqc **" >>${params.verfile}
+    #fastqc -v >>${params.verfile}
     """
 
 }
@@ -80,8 +79,10 @@ process mapPE {
 
     input:
     path idx_bowtie
+    tuple val(pair_id), path(r1fq,r2fq)
 
     output:
+
 
     script:
     """
@@ -92,7 +93,6 @@ process mapPE {
 
 process multiqc {
     publishDir params.multiqcOut, mode:'copy'
-
     label 'small'
 
 
