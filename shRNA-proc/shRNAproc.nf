@@ -98,7 +98,7 @@ println ""
 // fastq file paths pairs channel - paths
 fastqr1_chPE= Channel.fromPath(params.fastqPE , checkIfExists:true)
 	fastqr1_chPE
-	    .view()
+	    //.view()
 	    .set { fastqr1_chPE }
 
 read_pairs = Channel.fromFilePairs(params.fastqPE, checkIfExists: true )
@@ -109,7 +109,7 @@ read_pairs = Channel.fromFilePairs(params.fastqPE, checkIfExists: true )
 // fastq file paths channel - paths
 fastqr1_ch2= Channel.fromPath(params.fastq , checkIfExists:true)
 	fastqr1_ch2
-	    .view()
+	    //.view()
 	    .set { fastqr1_ch2 }
 
 
