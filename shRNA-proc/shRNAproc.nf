@@ -147,16 +147,6 @@ workflow {
 	//mapPE(idx_bowtie_ch, read_pairs)
 	//mapPE(read_pairs)
 
-
-	// mageck contrasts RSL
-	cntRSL_ch=filter_RSL.out.rsl_countstable_filt_ch
-	 	cntRSL_ch
-	 		.combine(prep_library_files.out.lib_gmt_ch)
-	 		.combine(comparisons_ch)
-	 		.view()
-	 		.set { cntRSL_ch }
-
-
 	//QC
 	fastqc(fastqr1_ch2)
 
