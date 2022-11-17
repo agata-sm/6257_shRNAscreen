@@ -64,7 +64,7 @@ process idx {
     path shFasta
 
     output:
-    path 'shRNA_Idx_bowtie2*', emit: idx_bowtie
+    path 'shRNA_Idx_bowtie2*', emit: idx_bowtie_ch
 
     script:
     """
@@ -78,7 +78,7 @@ process mapPE {
     label 'mid_mem'
 
     input:
-    path idx_bowtie
+    path idx_bowtie_ch
     tuple val(pair_id), path(r1fq,r2fq)
 
     output:

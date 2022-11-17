@@ -133,8 +133,8 @@ workflow {
 	idx(fa_ch)
 
 	//read processing
-	idx_ch=idx.out.idx_bowtie
-	mapPE(idx_ch, fastqr1_chPE)
+	idx_bowtie_ch=idx.out.idx_bowtie
+	mapPE(idx_bowtie_ch, fastqr1_chPE)
 
 	//QC
 	fastqc(fastqr1_ch2)
