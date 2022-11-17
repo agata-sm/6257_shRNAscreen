@@ -79,26 +79,24 @@ process mapPE {
 
     input:
     //path idx_bowtie_ch
-    tuple val(pair_id), path(r1fq,r2fq)
+    tuple val(pair_id), path(reads)
 
     output:
     path "${pair_id}.mapped.bowtie2.bam"
 
     script:
     """
-    echo $r1fq
-    wc -l $r1fq
-    echo $r2fq
-    wc -l $r2fq
+    #echo $r1fq
+    #wc -l $r1fq
+    #echo $r2fq
+    #wc -l $r2fq
 
     touch ${pair_id}.mapped.bowtie2.bam
 
-    #bowtie2 -p 4 -a --very-sensitive --dovetail --fr -x $idx_bowtie_ch -q -1 $r1fq -2 $r2fq  | samtools view -hbo ${pair_id}.mapped.bowtie2.bam -
+    bowtie2 -p 4 -a --very-sensitive --dovetail --fr -x $idx_bowtie_ch -q -1 $reads[0] -2 $reads[1]  | samtools view -hbo ${pair_id}.mapped.bowtie2.bam -
     
     """
 }
-
-//[M47, [/proj/snic2022-23-410/private/data/M47_R1_001.fastq.gz, /proj/snic2022-23-410/private/data/M47_R2_001.fastq.gz]]
 
 
 process multiqc {

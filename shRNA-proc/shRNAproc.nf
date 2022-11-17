@@ -106,8 +106,6 @@ read_pairs = Channel.fromFilePairs(params.fastqPE, checkIfExists: true )
 	    .view()
 	    .set { read_pairs }
 
-//[M47, [/proj/snic2022-23-410/private/data/M47_R1_001.fastq.gz, /proj/snic2022-23-410/private/data/M47_R2_001.fastq.gz]]
-
 
 // fastq file paths channel - paths
 fastqr1_ch2= Channel.fromPath(params.fastq , checkIfExists:true)
