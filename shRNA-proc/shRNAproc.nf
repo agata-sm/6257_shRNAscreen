@@ -118,7 +118,7 @@ fa_ch=Channel.fromPath(params.shLibraryFa , checkIfExists:true)
 
 /////////////////////////////
 // processes
-include { fastqc; multiqc; idx } from './shRNAproc-modules.nf'
+include { fastqc; multiqc; idx; mapPE } from './shRNAproc-modules.nf'
 
 
 
@@ -134,6 +134,7 @@ workflow {
 
 	//read processing
 	idx_ch=idx.out.idx_bowtie
+	mapPE(idx_ch, fastqr1_chPE)
 
 	//QC
 	fastqc(fastqr1_ch2)

@@ -75,18 +75,18 @@ process idx {
 
 process mapPE {
     publishDir params.mapOut, mode:'copy'
-    label 'small'
+    label 'mid_mem'
 
     input:
     path idx_bowtie
     tuple val(pair_id), path(r1fq,r2fq)
 
     output:
-
+    path "${pair_id}.mapped.bowtie2.bam"
 
     script:
     """
-    echo $idx_bowtie
+    bowtie2 -p 4 -a --very-sensitive --dovetail --fr -x $idx_bowtie -q -1 $r1fq -2 $r2fq  | samtools view -hbo ${pair_id}.mapped.bowtie2.bam -
     """
 }
 
