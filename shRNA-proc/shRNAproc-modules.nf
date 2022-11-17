@@ -39,7 +39,7 @@ process fastqc {
 
     output:
     path('*'), emit: fastqc_report_ch
-    path "${params.verfile}"
+    //path "${params.verfile}"
 
     script:
     """
