@@ -64,7 +64,7 @@ process idx {
     path shFasta
 
     output:
-    path 'shRNA_Idx_bowtie2*', emit: idx_bowtie_ch
+    tuple path('shRNA_Idx_bowtie2*'), emit: idx_bowtie_ch
 
     script:
     """

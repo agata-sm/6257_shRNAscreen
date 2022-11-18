@@ -135,12 +135,15 @@ workflow {
 
 	//read processing
 	idx_bowtie_ch=idx.out.idx_bowtie_ch
-	
+
 	map_readsPE_ch=read_pairs
 		map_readsPE_ch
 			.combine(idx_bowtie_ch)
 			.view()
 			.set {map_readsPE_ch}
+
+//[M47, [/proj/snic2022-23-410/private/data/M47_R1_001.fastq.gz, /proj/snic2022-23-410/private/data/M47_R2_001.fastq.gz], /crex/proj/snic2022-23-410/nobackup/private/nbis6257/analysis/tst2/work/cc/a76d2c137ebba7b4661f2df6ce6d78/shRNA_Idx_bowtie2.1.bt2, /crex/proj/snic2022-23-410/nobackup/private/nbis6257/analysis/tst2/work/cc/a76d2c137ebba7b4661f2df6ce6d78/shRNA_Idx_bowtie2.2.bt2, /crex/proj/snic2022-23-410/nobackup/private/nbis6257/analysis/tst2/work/cc/a76d2c137ebba7b4661f2df6ce6d78/shRNA_Idx_bowtie2.3.bt2, /crex/proj/snic2022-23-410/nobackup/private/nbis6257/analysis/tst2/work/cc/a76d2c137ebba7b4661f2df6ce6d78/shRNA_Idx_bowtie2.4.bt2, /crex/proj/snic2022-23-410/nobackup/private/nbis6257/analysis/tst2/work/cc/a76d2c137ebba7b4661f2df6ce6d78/shRNA_Idx_bowtie2.rev.1.bt2, /crex/proj/snic2022-23-410/nobackup/private/nbis6257/analysis/tst2/work/cc/a76d2c137ebba7b4661f2df6ce6d78/shRNA_Idx_bowtie2.rev.2.bt2]
+
 
 	//mapPE(map_readsPE_ch)
 	
