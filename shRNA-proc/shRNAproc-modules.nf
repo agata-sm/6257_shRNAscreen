@@ -78,8 +78,7 @@ process mapPE {
     label 'mid_mem'
 
     input:
-    path idx_bowtie_ch
-    tuple val(pair_id), path(reads)
+    tuple val(pair_id), path(reads), path(idx_bowtie_ch)
 
     output:
     path "${pair_id}.mapped.bowtie2.bam"
