@@ -138,7 +138,7 @@ workflow {
 		idx_bowtie_ch
 			//.flatten()
 			.collect()
-			.map{[it]}
+			//.map{[it]}
 			//.view()
 			.set{ idx_bowtie_ch }
 
@@ -148,9 +148,11 @@ workflow {
 	map_readsPE_ch=trim_readsPE.out.trimmed_reads_PE_ch
 		map_readsPE_ch
 			.map{[it]}
+			.view()
 			.combine(idx_bowtie_ch)
+			.view()
 			.flatten()
-			//.view()
+			.view()
 			.set {map_readsPE_ch}
 
 
