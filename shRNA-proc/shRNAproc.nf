@@ -148,11 +148,11 @@ workflow {
 	map_readsPE_ch=trim_readsPE.out.trimmed_reads_PE_ch
 		map_readsPE_ch
 			.map{[it]}
+			//.view()
+			//.combine(idx_bowtie_ch)
 			.view()
-			.combine(idx_bowtie_ch)
-			.view()
-			.flatten()
-			.view()
+			//.flatten()
+			//.view()
 			.set {map_readsPE_ch}
 
 
