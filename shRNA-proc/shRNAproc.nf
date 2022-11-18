@@ -119,7 +119,7 @@ fa_ch=Channel.fromPath(params.shLibraryFa , checkIfExists:true)
 
 /////////////////////////////
 // processes
-include { fastqc; multiqc; idx; mapPE } from './shRNAproc-modules.nf'
+include { fastqc; multiqc; idx; trim_readsPE; mapPE } from './shRNAproc-modules.nf'
 
 
 
@@ -142,7 +142,9 @@ workflow {
 			.set{ idx_bowtie_ch }
 
 
-	map_readsPE_ch=read_pairs
+	trim_readsPE(read_pairs)
+
+	map_readsPE_ch=trim_readsPE.out.trimmed_reads_PE_ch
 		map_readsPE_ch
 			.map{[it]}
 			.combine(idx_bowtie_ch)
@@ -150,7 +152,7 @@ workflow {
 			.set {map_readsPE_ch}
 
 
-	mapPE(map_readsPE_ch)
+	//mapPE(map_readsPE_ch)
 	
 	//mapPE(idx_bowtie_ch, read_pairs)
 	//mapPE(read_pairs)

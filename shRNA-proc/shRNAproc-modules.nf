@@ -17,7 +17,8 @@ params.mapOut="${params.outdir}/${params.map}"
 
 
 
-
+params.adastring_fwd="${params.ada5}...${params.ada3}"
+params.adastring_rc="${params.ada5rc}...${params.ada3rc}"
 
 
 
@@ -69,6 +70,41 @@ process idx {
     script:
     """
     bowtie2-build -f $shFasta shRNA_Idx_bowtie2
+    """
+}
+
+
+process trim_readsPE {
+    publishDir params.mapOut, mode:'copy'
+    label 'small'
+
+    input:
+    tuple val(pair_id), path(reads)
+
+    output:
+    tuple val(pair_id), path("${pair_id}.trimmed_merged_R1.fastq"), path("${pair_id}.trimmed_merged_R2.fastq"), emit: trimmed_reads_PE_ch
+    path("${pair_id}.cutadapt_trim_fwd.log")
+    path("${pair_id}.cutadapt_trim_rc.log")
+
+    script:
+    """
+    
+    cutadapt -e 0.1 -O 30 -m 48 -M 50  -a $params.adastring_fwd -A $params.adastring_rc --pair-filter=both \
+    --untrimmed-output ${pair_id}.noada.trimFwd.r1.fastq --untrimmed-paired-output ${pair_id}.noada.trimFwd.r2.fastq \
+    --too-long-output ${pair_id}.toolong.trimFwd.r1.fastq --too-long-paired-output ${pair_id}.toolong.trimFwd.r2.fastq \
+    -o ${pair_id}.trimFwd.r1.fastq -p ${pair_id}.trimFwd.r2.fastq $reads[0] $reads[1] >${pair_id}.cutadapt_trim_fwd.log 2>&1
+
+    cat ${pair_id}.noada.trimFwd.r1.fastq ${pair_id}.toolong.trimFwd.r1.fastq >${pair_id}.untrimmed.trimFwd.r1.fastq
+    cat ${pair_id}.noada.trimFwd.r2.fastq ${pair_id}.toolong.trimFwd.r2.fastq >${pair_id}.untrimmed.trimFwd.r2.fastq
+
+    cutadapt -e 0.1 -O 30 -m 48 -M 50  -A $params.adastring_fwd -a $params.adastring_rc --pair-filter=both \
+    --untrimmed-output ${pair_id}.noada.trimRc.r1.fastq --untrimmed-paired-output ${pair_id}.noada.trimRc.r2.fastq \
+    --too-long-output ${pair_id}.toolong.trimRc.r1.fastq --too-long-paired-output ${pair_id}.toolong.trimRc.r2.fastq \
+    -o ${pair_id}.trimRc.r1.fastq -p ${pair_id}.trimRc.r2.fastq ${pair_id}.untrimmed.trimFwd.r1.fastq ${pair_id}.untrimmed.trimFwd.r2.fastq >${pair_id}.cutadapt_trim_rc.log 2>&1
+
+    cat ${pair_id}.trimFwd.r1.fastq ${pair_id}.trimRc.r1.fastq > ${pair_id}.trimmed_merged_R1.fastq
+    cat ${pair_id}.trimFwd.r2.fastq ${pair_id}.trimRc.r2.fastq > ${pair_id}.trimmed_merged_R2.fastq
+
     """
 }
 
