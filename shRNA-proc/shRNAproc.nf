@@ -138,7 +138,8 @@ workflow {
 		idx_bowtie_ch
 			//.flatten()
 			.collect()
-			.view()
+			.map{[it]}
+			//.view()
 			.set{ idx_bowtie_ch }
 
 
@@ -148,6 +149,7 @@ workflow {
 		map_readsPE_ch
 			.map{[it]}
 			.combine(idx_bowtie_ch)
+			.flatten()
 			//.view()
 			.set {map_readsPE_ch}
 
