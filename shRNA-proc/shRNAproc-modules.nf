@@ -9,6 +9,10 @@ params.fastqcOut="${params.outdir}/${params.fastqc}"
 params.multiqc="MultiQC"
 params.multiqcOut="${params.outdir}/${params.multiqc}"
 
+params.trim="trimmedPE"
+params.trimOut="${params.outdir}/${params.trim}"
+
+
 params.idx="Bowtie2-idx"
 params.idxOut="${params.outdir}/${params.idx}"
 
@@ -75,7 +79,7 @@ process idx {
 
 
 process trim_readsPE {
-    publishDir params.mapOut, mode:'copy'
+    publishDir params.trimOut, mode:'copy'
     label 'small'
 
     input:
