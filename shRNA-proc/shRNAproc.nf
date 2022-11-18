@@ -138,7 +138,7 @@ workflow {
 		idx_bowtie_ch
 			//.flatten()
 			.collect()
-			//.map{[it]}
+			.map{[it]}
 			//.view()
 			.set{ idx_bowtie_ch }
 
