@@ -118,14 +118,14 @@ process mapPE {
     label 'mid_mem'
 
     input:
-    tuple val(pair_id), path(reads), path(idx_bowtie_ch)
+    tuple val(pair_id), path(r1), path(r2), path(idx_bowtie_ch)
 
     output:
     path "${pair_id}.mapped.bowtie2.bam"
 
     script:
     """
-    bowtie2 -p 4 -a --very-sensitive --dovetail --fr -x shRNA_Idx_bowtie2 -q -1 $reads[0] -2 $reads[1]  | samtools view -hbo ${pair_id}.mapped.bowtie2.bam -
+    bowtie2 -p 4 -a --very-sensitive --dovetail --fr -x shRNA_Idx_bowtie2 -q -1 $r1 -2 $r2  | samtools view -hbo ${pair_id}.mapped.bowtie2.bam -
     """
 }
 
