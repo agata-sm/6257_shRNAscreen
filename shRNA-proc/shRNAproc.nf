@@ -149,12 +149,14 @@ workflow {
 		map_readsPE_ch
 			.map{[it]}
 			//.view()
-			//.combine(idx_bowtie_ch)
+			.combine(idx_bowtie_ch)
 			.view()
 			//.flatten()
 			//.view()
 			.set {map_readsPE_ch}
 
+
+//[OVCAR3-ct1, /crex/proj/snic2022-23-410/nobackup/private/nbis6257/analysis/tst2/work/a3/528c6624b366de33f193bdce07b0b4/OVCAR3-ct1.trimmed_merged_R1.fastq, /crex/proj/snic2022-23-410/nobackup/private/nbis6257/analysis/tst2/work/a3/528c6624b366de33f193bdce07b0b4/OVCAR3-ct1.trimmed_merged_R2.fastq]]
 
 	mapPE(map_readsPE_ch)
 	
