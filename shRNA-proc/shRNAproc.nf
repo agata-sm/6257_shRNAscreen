@@ -152,7 +152,7 @@ workflow {
 			.set {map_readsPE_ch}
 
 
-	//mapPE(map_readsPE_ch)
+	mapPE(map_readsPE_ch)
 	
 	//mapPE(idx_bowtie_ch, read_pairs)
 	//mapPE(read_pairs)
