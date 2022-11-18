@@ -103,7 +103,7 @@ println ""
 
 read_pairs = Channel.fromFilePairs(params.fastqPE, checkIfExists: true )
 	read_pairs
-	    .view()
+	    //.view()
 	    .set { read_pairs }
 
 
@@ -136,7 +136,7 @@ workflow {
 	//read processing
 	idx_bowtie_ch=idx.out.idx_bowtie_ch
 		idx_bowtie_ch
-			.flatten()
+			//.flatten()
 			.collect()
 			.view()
 			.set{ idx_bowtie_ch }
