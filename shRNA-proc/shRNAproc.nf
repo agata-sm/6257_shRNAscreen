@@ -136,6 +136,7 @@ workflow {
 	//read processing
 	idx_bowtie_ch=idx.out.idx_bowtie_ch
 		idx_bowtie_ch
+			.flatten()
 			.collect()
 			.view()
 			.set{ idx_bowtie_ch }
