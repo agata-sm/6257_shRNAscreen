@@ -92,7 +92,7 @@ process trim_readsPE {
     cutadapt -e 0.1 -O 30 -m 48 -M 50  -a $params.adastring_fwd -A $params.adastring_rc --pair-filter=both \
     --untrimmed-output ${pair_id}.noada.trimFwd.r1.fastq --untrimmed-paired-output ${pair_id}.noada.trimFwd.r2.fastq \
     --too-long-output ${pair_id}.toolong.trimFwd.r1.fastq --too-long-paired-output ${pair_id}.toolong.trimFwd.r2.fastq \
-    -o ${pair_id}.trimFwd.r1.fastq -p ${pair_id}.trimFwd.r2.fastq $reads[0] $reads[1] >${pair_id}.cutadapt_trim_fwd.log 2>&1
+    -o ${pair_id}.trimFwd.r1.fastq -p ${pair_id}.trimFwd.r2.fastq $reads >${pair_id}.cutadapt_trim_fwd.log 2>&1
 
     cat ${pair_id}.noada.trimFwd.r1.fastq ${pair_id}.toolong.trimFwd.r1.fastq >${pair_id}.untrimmed.trimFwd.r1.fastq
     cat ${pair_id}.noada.trimFwd.r2.fastq ${pair_id}.toolong.trimFwd.r2.fastq >${pair_id}.untrimmed.trimFwd.r2.fastq
