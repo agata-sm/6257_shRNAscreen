@@ -64,7 +64,7 @@ process idx {
     path shFasta
 
     output:
-    tuple path('shRNA_Idx_bowtie2*bt2'), path('shRNA_Idx_bowtie2.rev*bt2'), emit: idx_bowtie_ch
+    path('shRNA_Idx_bowtie2*') , emit: idx_bowtie_ch
 
     script:
     """
@@ -85,7 +85,7 @@ process mapPE {
 
     script:
     """
-    bowtie2 -p 4 -a --very-sensitive --dovetail --fr -x $idx_bowtie_ch -q -1 $reads[0] -2 $reads[1]  | samtools view -hbo ${pair_id}.mapped.bowtie2.bam -
+    bowtie2 -p 4 -a --very-sensitive --dovetail --fr -x shRNA_Idx_bowtie2 -q -1 $reads[0] -2 $reads[1]  | samtools view -hbo ${pair_id}.mapped.bowtie2.bam -
     """
 }
 

@@ -135,6 +135,7 @@ workflow {
 
 	//read processing
 	idx_bowtie_ch=idx.out.idx_bowtie_ch
+	
 
 	map_readsPE_ch=read_pairs
 		map_readsPE_ch
