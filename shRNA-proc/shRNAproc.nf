@@ -119,7 +119,7 @@ fa_ch=Channel.fromPath(params.shLibraryFa , checkIfExists:true)
 
 /////////////////////////////
 // processes
-include { fastqc; multiqc; idx; trim_readsPE; mapPE } from './shRNAproc-modules.nf'
+include { fastqc; multiqc; idx; trim_readsPE; mapPE; filter_reads; count_table } from './shRNAproc-modules.nf'
 
 
 
