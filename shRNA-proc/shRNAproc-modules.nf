@@ -151,6 +151,10 @@ process filter_reads {
 
     script:
     """
+    module load bioinfo-tools
+    module load samtools/1.8
+    module load NGSUtils/0.5.9
+
     echo "all alignments in sample ${pair_id}" >${pair_id}.read_stats.log
     samtools view -f 64 $bam_unfilt | wc -l >>${pair_id}.read_stats.log
 
