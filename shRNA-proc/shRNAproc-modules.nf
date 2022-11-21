@@ -19,8 +19,15 @@ params.idxOut="${params.outdir}/${params.idx}"
 params.map="mappedPE"
 params.mapOut="${params.outdir}/${params.map}"
 
+params.filt="mappedPE"
+params.filtOut="${params.outdir}/${params.filt}"
+
+params.cnttab="count_table"
+params.cnttabOut="${params.outdir}/${params.cnttab}"
 
 
+
+// format adapter strings
 params.adastring_fwd="${params.ada5}...${params.ada3}"
 params.adastring_rc="${params.ada5rc}...${params.ada3rc}"
 
@@ -122,11 +129,59 @@ process mapPE {
     tuple val(pair_id), path(r1), path(r2), path(idx_bowtie_ch)
 
     output:
-    path "${pair_id}.mapped.bowtie2.bam"
+    tuple val(pair_id), path("${pair_id}.mapped.bowtie2.bam"), emit: mappedPE_ch
 
     script:
     """
     bowtie2 -p 4 -a --very-sensitive --dovetail --fr -x shRNA_Idx_bowtie2 -q -1 $r1 -2 $r2  | samtools view -hbo ${pair_id}.mapped.bowtie2.bam -
+    """
+}
+
+process filter_reads {
+    publishDir params.filtOut, mode:'copy'
+    label 'small'
+
+    input:
+    tuple val(pair_id), path(bam_unfilt)
+
+    output:
+    path "${pair_id}.mapped.filt_mapq255_${params.nm}.bowtie2.bam", emit: filtered_ch
+    path "${pair_id}.read_stats.log"
+
+
+    script:
+    """
+    echo "all alignments in sample ${pair_id}" >${pair_id}.read_stats.log
+    samtools view -f 64 $bam_unfilt | wc -l >>${pair_id}.read_stats.log
+
+    echo "aligned read pairs" >>${pair_id}.read_stats.log
+    samtools view -F 256 -f 2 -q 255 -hbo ${pair_id}.mapped.filt_mapq255.bam $bam_unfilt
+    
+    echo "alignments with MAPQ 255" >>${pair_id}.read_stats.log
+
+    samtools view -f 64 ${pair_id}.mapped.filt_mapq255.bam | wc -l  >>${pair_id}.read_stats.log
+
+    echo "applying filter NM ${params.nm}
+    bamutils filter ${pair_id}.mapped.filt_mapq255.bam ${pair_id}.mapped.filt_mapq255_${params.nm}.bowtie2.bam -mismatch ${params.nm} -properpair >>${pair_id}.read_stats.log
+    """
+}
+
+
+process count_table {
+    publishDir params.cnttabOut, mode:'copy'
+    label 'small'
+
+    input:
+    path(bam_filt)
+
+    output:
+    path "${params.projname}.counts"
+    path "${params.projname}.counts.summary"
+
+
+    script:
+    """
+    featureCounts -p --countReadPairs --fracOverlap 0.958 -F SAF -a ${params.annot} -o ${params.projname}.counts $bam_filt
     """
 }
 

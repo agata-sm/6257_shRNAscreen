@@ -163,6 +163,13 @@ workflow {
 	//mapPE(idx_bowtie_ch, read_pairs)
 	//mapPE(read_pairs)
 
+	filter_reads(mapPE.out.mappedPE_ch)
+
+	filt_bams_ch=filter_reads.out.filtered_ch
+	count_table(filt_bams_ch.collect())
+
+
+
 	//QC
 	fastqc(fastqr1_ch2)
 
