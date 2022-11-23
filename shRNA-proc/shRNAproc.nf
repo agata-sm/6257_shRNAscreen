@@ -32,7 +32,7 @@ params.fastq="$params.fastqdir/*fastq.gz"
 
 log.info """\
  SH-RNA SCREEN PROCESSING - N F   P I P E L I N E
- ==============================================
+ ==================================================
  
  fastq files directory: ${params.fastqdir}
 
@@ -147,28 +147,17 @@ workflow {
 
 	map_readsPE_ch=trim_readsPE.out.trimmed_reads_PE_ch
 		map_readsPE_ch
-			//.map{[it]} not used
-			//.view()
 			.combine(idx_bowtie_ch)
-			//.view()
-			//.flatten() not used
 			//.view()
 			.set {map_readsPE_ch}
 
 
-//[M46, /crex/proj/snic2022-23-410/nobackup/private/nbis6257/analysis/tst2/work/87/afc8977e8c23fc005600b41ba59465/M46.trimmed_merged_R1.fastq, /crex/proj/snic2022-23-410/nobackup/private/nbis6257/analysis/tst2/work/87/afc8977e8c23fc005600b41ba59465/M46.trimmed_merged_R2.fastq, [/crex/proj/snic2022-23-410/nobackup/private/nbis6257/analysis/tst2/work/6a/3534f8e4e69a9df47e514f4fb010f6/shRNA_Idx_bowtie2.1.bt2, /crex/proj/snic2022-23-410/nobackup/private/nbis6257/analysis/tst2/work/6a/3534f8e4e69a9df47e514f4fb010f6/shRNA_Idx_bowtie2.2.bt2, /crex/proj/snic2022-23-410/nobackup/private/nbis6257/analysis/tst2/work/6a/3534f8e4e69a9df47e514f4fb010f6/shRNA_Idx_bowtie2.3.bt2, /crex/proj/snic2022-23-410/nobackup/private/nbis6257/analysis/tst2/work/6a/3534f8e4e69a9df47e514f4fb010f6/shRNA_Idx_bowtie2.4.bt2]]
-
 	mapPE(map_readsPE_ch)
 	
-	//mapPE(idx_bowtie_ch, read_pairs)
-	//mapPE(read_pairs)
-
 	filter_reads(mapPE.out.mappedPE_ch)
 
 	filt_bams_ch=filter_reads.out.filtered_ch
 	count_table(filt_bams_ch.collect())
-
-
 
 	//QC
 	fastqc(fastqr1_ch2)
