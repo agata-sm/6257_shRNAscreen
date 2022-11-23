@@ -19,13 +19,14 @@ params.idxOut="${params.outdir}/${params.idx}"
 params.map="mappedPE"
 params.mapOut="${params.outdir}/${params.map}"
 
-params.filt="mappedPE"
+params.filt="filteredPE"
 params.filtOut="${params.outdir}/${params.filt}"
 
 params.cnttab="count_table"
 params.cnttabOut="${params.outdir}/${params.cnttab}"
 
-
+params.mageck="mageck_rra"
+params.mageckOut="${params.outdir}/${params.mageck}"
 
 // format adapter strings
 params.adastring_fwd="${params.ada5}...${params.ada3}"
@@ -145,7 +146,7 @@ process filter_reads {
     tuple val(pair_id), path(bam_unfilt)
 
     output:
-    path "${pair_id}.mapped.filt_mapq255_${params.nm}.bowtie2.bam", emit: filtered_ch
+    path "${pair_id}.mapped.filt_mapq255_NM${params.nm}.bowtie2.bam", emit: filtered_ch
     path "${pair_id}.read_stats.log"
 
 
@@ -179,7 +180,7 @@ process count_table {
     path(bam_filt)
 
     output:
-    path "${params.projname}.counts"
+    path "${params.projname}.counts", emit: count_table_ch
     path "${params.projname}.counts.summary"
 
 
@@ -188,6 +189,8 @@ process count_table {
     featureCounts -p --countReadPairs --fracOverlap 0.958 -F SAF -a ${params.annot} -o ${params.projname}.counts $bam_filt
     """
 }
+
+
 
 
 process multiqc {
