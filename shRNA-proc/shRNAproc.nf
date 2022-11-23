@@ -11,7 +11,7 @@
 
 nextflow.enable.dsl=2
 
-params.pipelinename="Minimal QC pipeline"
+params.pipelinename="shRNA Screen Processing"
 
 /* 
  * pipeline input parameters 
@@ -31,8 +31,8 @@ params.fastq="$params.fastqdir/*fastq.gz"
 
 
 log.info """\
- M I N I M A L   Q C - N F   P I P E L I N E
- ===================================
+ SH-RNA SCREEN PROCESSING - N F   P I P E L I N E
+ ==============================================
  
  fastq files directory: ${params.fastqdir}
 
