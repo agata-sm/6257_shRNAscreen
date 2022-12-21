@@ -124,7 +124,7 @@ process trim_readsPE {
 
 process mapPE {
     publishDir params.mapOut, mode:'copy'
-    label 'mid_mem'
+    label 'big_mem'
 
     input:
     tuple val(pair_id), path(r1), path(r2), path(idx_bowtie_ch)
@@ -156,25 +156,31 @@ process filter_reads {
     module load samtools/1.8
     module load NGSUtils/0.5.9
 
-    echo "all alignments in sample ${pair_id}" >${pair_id}.read_stats.log
+    echo "all alignments (aligned read pairs) in sample ${pair_id}" >${pair_id}.read_stats.log
     samtools view -f 64 $bam_unfilt | wc -l >>${pair_id}.read_stats.log
+    echo ""
 
-    echo "aligned read pairs" >>${pair_id}.read_stats.log
+    echo "" >>${pair_id}.read_stats.log
     samtools view -F 256 -f 2 -q 255 -hbo ${pair_id}.mapped.filt_mapq255.bam $bam_unfilt
     
-    echo "alignments with MAPQ 255" >>${pair_id}.read_stats.log
+    echo "alignments with MAPQ 255 (proxy for aligned read pairs)" >>${pair_id}.read_stats.log
 
     samtools view -f 64 ${pair_id}.mapped.filt_mapq255.bam | wc -l  >>${pair_id}.read_stats.log
 
-    echo "applying filter NM ${params.nm}"
+    echo "" >>${pair_id}.read_stats.log
+    echo "applying filter NM ${params.nm}; reads counted"
     bamutils filter ${pair_id}.mapped.filt_mapq255.bam ${pair_id}.mapped.filt_mapq255_NM${params.nm}.bowtie2.bam -mismatch ${params.nm} -properpair >>${pair_id}.read_stats.log
+    
+    echo "alignments with MAPQ 255 which passed the mismatch filter (proxy for aligned read pairs with max ${params.nm} mismatches)" >>${pair_id}.read_stats.log
+    samtools view -f 64 ${pair_id}.mapped.filt_mapq255_NM${params.nm}.bowtie2.bam | wc -l
+
     """
 }
 
 
 process count_table {
     publishDir params.cnttabOut, mode:'copy'
-    label 'small'
+    label 'mid_mem'
 
     input:
     path(bam_filt)
