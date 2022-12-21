@@ -167,12 +167,12 @@ process filter_reads {
 
     samtools view -f 64 ${pair_id}.mapped.filt_mapq255.bam | wc -l  >>${pair_id}.read_stats.log
 
-    echo "" >>${pair_id}.read_stats.log
-    echo "applying filter NM ${params.nm}; reads counted"
+    echo ""
+    echo "applying filter NM ${params.nm}; reads counted >>${pair_id}.read_stats.log"
     bamutils filter ${pair_id}.mapped.filt_mapq255.bam ${pair_id}.mapped.filt_mapq255_NM${params.nm}.bowtie2.bam -mismatch ${params.nm} -properpair >>${pair_id}.read_stats.log
     
     echo "alignments with MAPQ 255 which passed the mismatch filter (proxy for aligned read pairs with max ${params.nm} mismatches)" >>${pair_id}.read_stats.log
-    samtools view -f 64 ${pair_id}.mapped.filt_mapq255_NM${params.nm}.bowtie2.bam | wc -l
+    samtools view -f 64 ${pair_id}.mapped.filt_mapq255_NM${params.nm}.bowtie2.bam | wc -l >>${pair_id}.read_stats.log"
 
     """
 }
