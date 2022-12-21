@@ -171,11 +171,14 @@ process filter_reads {
     echo "applying filter NM ${params.nm}; reads counted >>${pair_id}.read_stats.log"
     bamutils filter ${pair_id}.mapped.filt_mapq255.bam ${pair_id}.mapped.filt_mapq255_NM${params.nm}.bowtie2.bam -mismatch ${params.nm} -properpair >>${pair_id}.read_stats.log
     
-    echo "alignments with MAPQ 255 which passed the mismatch filter (proxy for aligned read pairs with max ${params.nm} mismatches)" >>${pair_id}.read_stats.log
-    samtools view -f 64 ${pair_id}.mapped.filt_mapq255_NM${params.nm}.bowtie2.bam | wc -l >>${pair_id}.read_stats.log"
+    echo "alignments with MAPQ 255 which passed the mismatch filter (proxy for aligned read pairs with max ${params.nm} mismatches)" >>${pair_id}.read_stats.log"
+    echo "alignments filtered for NM: `samtools view -f 64 ${pair_id}.mapped.filt_mapq255_NM${params.nm}.bowtie2.bam | wc -l >>${pair_id}.read_stats.log`"
+    samtools view -f 64 ${pair_id}.mapped.filt_mapq255_NM${params.nm}.bowtie2.bam | wc -l >>${pair_id}.read_stats.log
 
     """
 }
+
+echo "bla bla `samtools view -f 64 OVCAR3-ct1.mapped.bowtie2.mapq255.NM1.bam | wc -l`" >txt.log
 
 
 process count_table {
