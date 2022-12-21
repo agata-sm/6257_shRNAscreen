@@ -178,8 +178,6 @@ process filter_reads {
     """
 }
 
-echo "bla bla `samtools view -f 64 OVCAR3-ct1.mapped.bowtie2.mapq255.NM1.bam | wc -l`" >txt.log
-
 
 process count_table {
     publishDir params.cnttabOut, mode:'copy'
