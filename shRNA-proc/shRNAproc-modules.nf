@@ -156,14 +156,14 @@ process filter_reads {
     module load samtools/1.8
     module load NGSUtils/0.5.9
 
-    echo "all alignments (aligned read pairs) in sample ${pair_id}" >${pair_id}.read_stats.log
+    echo "all R1 alignments (proxy for aligned read pairs) in sample ${pair_id}" >${pair_id}.read_stats.log
     samtools view -f 64 $bam_unfilt | wc -l >>${pair_id}.read_stats.log
     echo ""
 
     echo "" >>${pair_id}.read_stats.log
     samtools view -F 256 -f 2 -q 255 -hbo ${pair_id}.mapped.filt_mapq255.bam $bam_unfilt
     
-    echo "alignments with MAPQ 255 (proxy for aligned read pairs)" >>${pair_id}.read_stats.log
+    echo "R1 alignments with MAPQ 255 (proxy for aligned read pairs)" >>${pair_id}.read_stats.log
 
     samtools view -f 64 ${pair_id}.mapped.filt_mapq255.bam | wc -l  >>${pair_id}.read_stats.log
 
@@ -171,8 +171,8 @@ process filter_reads {
     echo "applying filter NM ${params.nm}; reads counted >>${pair_id}.read_stats.log"
     bamutils filter ${pair_id}.mapped.filt_mapq255.bam ${pair_id}.mapped.filt_mapq255_NM${params.nm}.bowtie2.bam -mismatch ${params.nm} -properpair >>${pair_id}.read_stats.log
     
-    echo "alignments with MAPQ 255 which passed the mismatch filter (proxy for aligned read pairs with max ${params.nm} mismatches)" >>${pair_id}.read_stats.log"
-    echo "alignments filtered for NM: `samtools view -f 64 ${pair_id}.mapped.filt_mapq255_NM${params.nm}.bowtie2.bam | wc -l >>${pair_id}.read_stats.log`"
+    echo "R1 alignments with MAPQ 255 which passed the mismatch filter (proxy for aligned read pairs with max ${params.nm} mismatches)" >>${pair_id}.read_stats.log"
+    echo "alignments filtered for NM: `samtools view -f 64 ${pair_id}.mapped.filt_mapq255_NM${params.nm}.bowtie2.bam | wc -l ` >>${pair_id}.read_stats.log"
     samtools view -f 64 ${pair_id}.mapped.filt_mapq255_NM${params.nm}.bowtie2.bam | wc -l >>${pair_id}.read_stats.log
 
     """
