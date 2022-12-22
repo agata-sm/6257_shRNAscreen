@@ -194,6 +194,9 @@ process count_table {
 
     script:
     """
+    module load bioinfo-tools
+    module load subread/2.0.3
+    
     featureCounts -p --countReadPairs --fracOverlap 0.958 -F SAF -a ${params.annot} -o ${params.projname}.counts $bam_filt
     """
 }
