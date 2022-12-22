@@ -159,19 +159,19 @@ process filter_reads {
     echo "all R1 alignments (proxy for aligned read pairs) in sample ${pair_id}" >${pair_id}.read_stats.log
     echo "aligned read pairs: `samtools view -f 64 $bam_unfilt | wc -l`" >>${pair_id}.read_stats.log
     samtools view -f 64 $bam_unfilt | wc -l >>${pair_id}.read_stats.log
-    echo ""
-
     echo "" >>${pair_id}.read_stats.log
+
     samtools view -F 256 -f 2 -q 255 -hbo ${pair_id}.mapped.filt_mapq255.bam $bam_unfilt
     
     echo "R1 alignments with MAPQ 255 (proxy for correctly aligned read pairs)" >>${pair_id}.read_stats.log
     echo "aligned read pairs with MAPQ 255: `samtools view -f 64 ${pair_id}.mapped.filt_mapq255.bam | wc -l `" >>${pair_id}.read_stats.log
     samtools view -f 64 ${pair_id}.mapped.filt_mapq255.bam | wc -l  >>${pair_id}.read_stats.log
 
-    echo ""
+    echo "" >>${pair_id}.read_stats.log
     echo "applying filter NM ${params.nm}; reads counted ">>${pair_id}.read_stats.log
     bamutils filter ${pair_id}.mapped.filt_mapq255.bam ${pair_id}.mapped.filt_mapq255_NM${params.nm}.bowtie2.bam -mismatch ${params.nm} -properpair >>${pair_id}.read_stats.log
     
+    echo "" >>${pair_id}.read_stats.log
     echo "R1 alignments with MAPQ 255 which passed the mismatch filter (proxy for aligned read pairs with max ${params.nm} mismatches)" >>${pair_id}.read_stats.log
     echo "aligned read pairs with MAPQ 255 filtered for NM ${params.nm}: `samtools view -f 64 ${pair_id}.mapped.filt_mapq255_NM${params.nm}.bowtie2.bam | wc -l `">>${pair_id}.read_stats.log
     samtools view -f 64 ${pair_id}.mapped.filt_mapq255_NM${params.nm}.bowtie2.bam | wc -l >>${pair_id}.read_stats.log
