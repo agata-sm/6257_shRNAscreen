@@ -157,7 +157,7 @@ process filter_reads {
     module load NGSUtils/0.5.9
 
     echo "all R1 alignments (proxy for aligned read pairs) in sample ${pair_id}" >${pair_id}.read_stats.log
-    echo "aligned read pairs: `samtools view -f 64 $bam_unfilt | wc -l >>${pair_id}.read_stats.log | wc -l`" >>${pair_id}.read_stats.log
+    echo "aligned read pairs: `samtools view -f 64 $bam_unfilt | wc -l`" >>${pair_id}.read_stats.log
     samtools view -f 64 $bam_unfilt | wc -l >>${pair_id}.read_stats.log
     echo ""
 
