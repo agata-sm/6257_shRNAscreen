@@ -204,10 +204,10 @@ process count_table {
 
 process filt_count_table {
     publishDir params.cnttabProcOut, mode:'copy'
-    label 'mid_mem'
+    label 'small'
 
     input:
-    path "${params.projname}.counts"
+    path(count_table_ch)
 
     output:
     path "${params.projname}.counts_processed.all.tsv"
