@@ -95,7 +95,7 @@ process trim_readsPE {
     tuple val(pair_id), path(reads)
 
     output:
-    tuple val(pair_id), path("${pair_id}.trimmed_merged_R1.fastq"), path("${pair_id}.trimmed_merged_R2.fastq"), emit: trimmed_reads_PE_ch
+    tuple val(pair_id), path("${pair_id}.trimmed_merged_R1.fastq.gz"), path("${pair_id}.trimmed_merged_R2.fastq.gz"), emit: trimmed_reads_PE_ch
     path("${pair_id}.cutadapt_trim_fwd.log")
     path("${pair_id}.cutadapt_trim_rc.log")
 
@@ -103,20 +103,21 @@ process trim_readsPE {
     """
     
     cutadapt -e 0.1 -O 30 -m 48 -M 50  -a $params.adastring_fwd -A $params.adastring_rc --pair-filter=both \
-    --untrimmed-output ${pair_id}.noada.trimFwd.r1.fastq --untrimmed-paired-output ${pair_id}.noada.trimFwd.r2.fastq \
-    --too-long-output ${pair_id}.toolong.trimFwd.r1.fastq --too-long-paired-output ${pair_id}.toolong.trimFwd.r2.fastq \
-    -o ${pair_id}.trimFwd.r1.fastq -p ${pair_id}.trimFwd.r2.fastq $reads >${pair_id}.cutadapt_trim_fwd.log 2>&1
+    --untrimmed-output ${pair_id}.noada.trimFwd.r1.fastq.gz --untrimmed-paired-output ${pair_id}.noada.trimFwd.r2.fastq.gz \
+    --too-long-output ${pair_id}.toolong.trimFwd.r1.fastq.gz --too-long-paired-output ${pair_id}.toolong.trimFwd.r2.fastq.gz \
+    -o ${pair_id}.trimFwd.r1.fastq.gz -p ${pair_id}.trimFwd.r2.fastq.gz $reads >${pair_id}.cutadapt_trim_fwd.log 2>&1
 
-    cat ${pair_id}.noada.trimFwd.r1.fastq ${pair_id}.toolong.trimFwd.r1.fastq >${pair_id}.untrimmed.trimFwd.r1.fastq
-    cat ${pair_id}.noada.trimFwd.r2.fastq ${pair_id}.toolong.trimFwd.r2.fastq >${pair_id}.untrimmed.trimFwd.r2.fastq
+    cat ${pair_id}.noada.trimFwd.r1.fastq.gz ${pair_id}.toolong.trimFwd.r1.fastq.gz >${pair_id}.untrimmed.trimFwd.r1.fastq.gz
+    cat ${pair_id}.noada.trimFwd.r2.fastq.gz ${pair_id}.toolong.trimFwd.r2.fastq.gz >${pair_id}.untrimmed.trimFwd.r2.fastq.gz
 
     cutadapt -e 0.1 -O 30 -m 48 -M 50  -A $params.adastring_fwd -a $params.adastring_rc --pair-filter=both \
-    --untrimmed-output ${pair_id}.noada.trimRc.r1.fastq --untrimmed-paired-output ${pair_id}.noada.trimRc.r2.fastq \
-    --too-long-output ${pair_id}.toolong.trimRc.r1.fastq --too-long-paired-output ${pair_id}.toolong.trimRc.r2.fastq \
-    -o ${pair_id}.trimRc.r1.fastq -p ${pair_id}.trimRc.r2.fastq ${pair_id}.untrimmed.trimFwd.r1.fastq ${pair_id}.untrimmed.trimFwd.r2.fastq >${pair_id}.cutadapt_trim_rc.log 2>&1
+    --untrimmed-output ${pair_id}.noada.trimRc.r1.fastq.gz --untrimmed-paired-output ${pair_id}.noada.trimRc.r2.fastq.gz \
+    --too-long-output ${pair_id}.toolong.trimRc.r1.fastq.gz --too-long-paired-output ${pair_id}.toolong.trimRc.r2.fastq.gz \
+    -o ${pair_id}.trimRc.r1.fastq.gz -p ${pair_id}.trimRc.r2.fastq.gz \
+    ${pair_id}.untrimmed.trimFwd.r1.fastq.gz ${pair_id}.untrimmed.trimFwd.r2.fastq.gz >${pair_id}.cutadapt_trim_rc.log 2>&1
 
-    cat ${pair_id}.trimFwd.r1.fastq ${pair_id}.trimRc.r1.fastq > ${pair_id}.trimmed_merged_R1.fastq
-    cat ${pair_id}.trimFwd.r2.fastq ${pair_id}.trimRc.r2.fastq > ${pair_id}.trimmed_merged_R2.fastq
+    cat ${pair_id}.trimFwd.r1.fastq.gz ${pair_id}.trimRc.r1.fastq.gz > ${pair_id}.trimmed_merged_R1.fastq.gz
+    cat ${pair_id}.trimFwd.r2.fastq.gz ${pair_id}.trimRc.r2.fastq.gz > ${pair_id}.trimmed_merged_R2.fastq.gz
 
     """
 }
