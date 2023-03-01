@@ -25,8 +25,8 @@ params.filtOut="${params.outdir}/${params.filt}"
 params.cnttab="count_table"
 params.cnttabOut="${params.outdir}/${params.cnttab}"
 
-params.mageck="mageck_rra"
-params.mageckOut="${params.outdir}/${params.mageck}"
+params.cnttabProc="count_table_processed"
+params.cnttabProcOut="${params.outdir}/${params.cnttabProc}"
 
 // format adapter strings
 params.adastring_fwd="${params.ada5}...${params.ada3}"
@@ -202,6 +202,31 @@ process count_table {
     """
 }
 
+process filt_count_table {
+    publishDir params.cnttabProcOut, mode:'copy'
+    label 'mid_mem'
+
+    input:
+    path "${params.projname}.counts"
+
+    output:
+    path "${params.projname}.counts_processed.all.tsv"
+    path "${params.projname}.counts_processed.0rm.tsv"
+    path "${params.projname}.counts_processed.0rm_noAlt.tsv"
+
+
+    script:
+    """
+    module load bioinfo-tools
+    module load perl/5.26.2
+
+    perl 6257_proc_cnt_table.pl --infile ${params.projname}.counts --outfile  ${params.projname}.counts_processed.all.tsv --library ${params.libraryDescription} --setup all
+
+    perl 6257_proc_cnt_table.pl --infile ${params.projname}.counts --outfile  ${params.projname}.counts_processed.0rm.tsv --library ${params.libraryDescription} --setup 0rm
+
+    perl 6257_proc_cnt_table.pl --infile ${params.projname}.counts --outfile  ${params.projname}.counts_processed.0rm_noAlt.tsv --library ${params.libraryDescription} --setup 0rm_noAlt
+    """
+}
 
 
 

@@ -158,6 +158,8 @@ workflow {
 
 	filt_bams_ch=filter_reads.out.filtered_ch
 	count_table(filt_bams_ch.collect())
+	
+	filt_count_table(count_table.out.count_table_ch)
 
 	//QC
 	fastqc(fastqr1_ch2)
