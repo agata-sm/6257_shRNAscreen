@@ -139,7 +139,7 @@ process mapPE {
     """
 }
 
-process filter_reads {
+process filter_alns {
     publishDir params.filtOut, mode:'copy'
     label 'small'
 
