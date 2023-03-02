@@ -42,3 +42,5 @@ BiocManager::install(c("MAGeCKFlute","edgeR","org.Hs.eg.db")
 :computer:
 
 :office:
+
+:globe_with_meridians:
