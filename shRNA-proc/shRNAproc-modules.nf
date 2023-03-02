@@ -220,11 +220,11 @@ process filt_count_table {
     #module load bioinfo-tools
     #module load perl/5.26.2
 
-    perl 6257_proc_cnt_table.pl --infile ${params.projname}.counts --outfile  ${params.projname}.counts_processed.all.tsv --library ${params.libraryDescription} --setup all
+    perl ${params.scripts}/6257_proc_cnt_table.pl --infile ${params.projname}.counts --outfile  ${params.projname}.counts_processed.all.tsv --library ${params.libraryDescription} --setup all
 
-    perl 6257_proc_cnt_table.pl --infile ${params.projname}.counts --outfile  ${params.projname}.counts_processed.0rm.tsv --library ${params.libraryDescription} --setup 0rm
+    perl ${params.scripts}/6257_proc_cnt_table.pl --infile ${params.projname}.counts --outfile  ${params.projname}.counts_processed.0rm.tsv --library ${params.libraryDescription} --setup 0rm
 
-    perl 6257_proc_cnt_table.pl --infile ${params.projname}.counts --outfile  ${params.projname}.counts_processed.0rm_noAlt.tsv --library ${params.libraryDescription} --setup 0rm_noAlt
+    perl ${params.scripts}/6257_proc_cnt_table.pl --infile ${params.projname}.counts --outfile  ${params.projname}.counts_processed.0rm_noAlt.tsv --library ${params.libraryDescription} --setup 0rm_noAlt
     """
 }
 
