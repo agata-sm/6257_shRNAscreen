@@ -153,9 +153,9 @@ process filter_alns {
 
     script:
     """
-    module load bioinfo-tools
-    module load samtools/1.8
-    module load NGSUtils/0.5.9
+    #module load bioinfo-tools
+    #module load samtools/1.8
+    #module load NGSUtils/0.5.9
 
     echo "all R1 alignments (proxy for aligned read pairs) in sample ${pair_id}" >${pair_id}.read_stats.log
     echo "aligned read pairs: `samtools view -f 64 $bam_unfilt | wc -l`" >>${pair_id}.read_stats.log
@@ -195,8 +195,8 @@ process count_table {
 
     script:
     """
-    module load bioinfo-tools
-    module load subread/2.0.3
+    #module load bioinfo-tools
+    #module load subread/2.0.3
     
     featureCounts -p --countReadPairs --fracOverlap 0.958 -F SAF -a ${params.annot} -o ${params.projname}.counts $bam_filt
     """
@@ -217,8 +217,8 @@ process filt_count_table {
 
     script:
     """
-    module load bioinfo-tools
-    module load perl/5.26.2
+    #module load bioinfo-tools
+    #module load perl/5.26.2
 
     perl 6257_proc_cnt_table.pl --infile ${params.projname}.counts --outfile  ${params.projname}.counts_processed.all.tsv --library ${params.libraryDescription} --setup all
 
