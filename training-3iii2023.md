@@ -34,3 +34,7 @@ BiocManager::install(c("MAGeCKFlute","edgeR","org.Hs.eg.db")
 ```
 
 
+ **Note**
+ Please check that the software is installed before the training session, as installing all of it at once will take some time.
+ 
+ 
