@@ -16,6 +16,9 @@ Besides running the data processing on an HPC cluster, the final count tables ne
 * R packages::
 
 ```
+install.packages("knitr")
+install.packages("bookdown")
+
 install.packages("tidyverse")
 install.packages("ggrepel")
 install.packages("reshape2")
