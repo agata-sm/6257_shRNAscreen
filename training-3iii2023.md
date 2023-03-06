@@ -107,7 +107,7 @@ The locations of `shLibraryFa`, `annot` and `libraryDescription` are set for the
 **Note**
 Only `projname`  and its corresponding `fastqdir` need to be updated if `proj-config-files/shRNAproc.config` is used for pipeline run.
 
-Please see NBIS Project Report for documentation on how `shLibraryFa`, `annot` and `libraryDescription` were obtained. Shortened examples are given in directory `miscallaneous/library`.
+Please see NBIS Project Report for documentation on how `shLibraryFa`, `annot` and `libraryDescription` were obtained. Shortened examples are given in directory `misc/library`.
 
 
 #### Comment on naming fastq files
@@ -191,6 +191,10 @@ Now we are almost ready to start the pipeline.
 
 ### Running the shRNA seq processing pipeline
 
+:office: :globe_with_meridians:
+This part is run on a remote server, i.e. Rackham.
+You are already logged to Rackham.
+
 It is most practical to run the pipeline in the background. (In fact this is the only viable way.) This protects the run from accidental session interruption - for example when you connect remotely to the server and the session disconnects.
 
 You can use several programs to achieve this, in this example we use screen, which is usually already installed in any Linux distribtion.
@@ -232,12 +236,66 @@ The run on the complete data set will take several hours.
 
 ## Statistical analysis using MAGeCK
 
+:office: :globe_with_meridians:
+This part is run on a remote server, i.e. Rackham.
+Login to Rackham first and inspect whether the pipeline run has finished.
+
 After the processing run will have completed, we can use its final output to perform statistical analysis. We will use (MAGeCK)[https://genomebiology.biomedcentral.com/articles/10.1186/s13059-014-0554-4] to perform robust rank aggregatoin (RRA) analysis. Detailed description of the program and its many options can be found at (MAGeCK homepage)[https://sourceforge.net/p/mageck/wiki/Home/].
 
+Script `6257_mageck_wrapper.sh` handles the software modules and the commands. You can copy it from `$PIPELINE_DIR`:
+
+```
+cp $PIPELINE_DIR/misc/mageck/6257_mageck_wrapper.sh .
+```
+
+For a new analysis you will need to change some details (directory locations, sample names, contrasts, computing project allocation), the file is ready for the test run.
+
+Please bear in mind that **sample names have to be identical to samples in the header** of the counts tables `PROJ_PREFIX/results/count_table_processed/PROJ_PREFIX.counts_processed.*.tsv` where `PROJ_PREFIX` is `projname` in the config file. In practice, these names are `SMPL` derived from fastq file names `SMPL_R1/2_001.fastq`.
+
+After modyfying the script you can submit it to the queue:
+
+```
+sbatch 6257_mageck_wrapper.sh
+```
+
+Inspect the queue as before 
+
+```
+jobinfo -u $USER
+```
+
+and after the run is over, you can also check the log file saved in the directory where the script was run. 
+
+The results are ready for report compilation.
 
 
+## Report
 
 :computer:
+This part is run on a local computer.
+
+
+First, we need to copy the report data to the local computer.
+
+We will need:
+
+* Results of RRA from MAGeCK;
+
+* processed count tables from `PROJ_PREFIX/results/count_table_processed/`
+
+* metadata files describing samples `metadata.txt` and comparisons `comparisons.txt` (examples can be found at `misc/metadata`)
+
+* read summarisation statistics at `PROJ_PREFIX/results/read_stats`
+
+Login to Rackham first and inspect whether the pipeline run has finished.
+
+
+
+:office: :globe_with_meridians:
+This part is run on a remote server, i.e. Rackham.
+Login to Rackham first and inspect whether the pipeline run has finished.
+
+
 
 :office:
 
