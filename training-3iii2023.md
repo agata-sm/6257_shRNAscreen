@@ -102,12 +102,12 @@ The contents:
 
 * `nm` - number of mismatches to tolerate in alignments to pass the quality filter.
 
-Example of this file can be found in directory `miscallaneous`; The locations of `shLibraryFa`, `annot` and `libraryDescription` are set for the current storage project on Rackham and can be used without change.
+The locations of `shLibraryFa`, `annot` and `libraryDescription` are set for the current storage project on Rackham and can be used without change.
 
 **Note**
 Only `projname`  and its corresponding `fastqdir` need to be updated if `proj-config-files/shRNAproc.config` is used for pipeline run.
 
-Please see NBIS Project Report for documentation on how `shLibraryFa`, `annot` and `libraryDescription` were obtained. Shortened examples are given in directory `library`.
+Please see NBIS Project Report for documentation on how `shLibraryFa`, `annot` and `libraryDescription` were obtained. Shortened examples are given in directory `miscallaneous/library`.
 
 
 #### Comment on naming fastq files
