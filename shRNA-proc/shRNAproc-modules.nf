@@ -22,6 +22,9 @@ params.mapOut="${params.outdir}/${params.map}"
 params.filt="filteredPE"
 params.filtOut="${params.outdir}/${params.filt}"
 
+params.filtLogs="read_logs"
+params.filtLogsOut="${params.outdir}/${params.filt}"
+
 params.cnttab="count_table"
 params.cnttabOut="${params.outdir}/${params.cnttab}"
 
@@ -148,7 +151,7 @@ process filter_alns {
 
     output:
     path "${pair_id}.mapped.filt_mapq255_NM${params.nm}.bowtie2.bam", emit: filtered_ch
-    path "${pair_id}.read_stats.log"
+    path "${pair_id}.read_stats.log", emit: readlogs_ch
 
 
     script:
@@ -180,6 +183,24 @@ process filter_alns {
     """
 }
 
+
+process read_logs {
+    publishDir params.filtLogsOut, mode:'copy'
+    label 'small'
+
+    input:
+    path(readlogs_ch)
+
+    output:
+    path "log_stats.txt"
+
+    script:
+
+    """
+    perl ${params.scripts}/6257_parse_logs.pl --outdir .
+    """
+
+}
 
 process count_table {
     publishDir params.cnttabOut, mode:'copy'
