@@ -41,6 +41,9 @@ BiocManager::install(c("MAGeCKFlute","edgeR","org.Hs.eg.db")
  Please check that the software is installed before the training session, as installing all of it at once will take some time.
  
  
+ </br>
+ </br>
+ 
  ## Data processing pipeline
  
 This pipeline uses a workflow manager called `nextflow`. It allows for automated task parallelisation and management, while ensuring process reproducibility via Docker containers.
@@ -53,6 +56,9 @@ The structure of the shRNA processing pipeline is shown on Figure 1.
 
 
 In practice, the workflow is started by a single command, and runs without user intervention.
+
+ </br>
+ </br>
 
 ### Before the run
 
@@ -197,7 +203,7 @@ You are already logged to Rackham.
 
 It is most practical to run the pipeline in the background. (In fact this is the only viable way.) This protects the run from accidental session interruption - for example when you connect remotely to the server and the session disconnects.
 
-You can use several programs to achieve this, in this example we use screen, which is usually already installed in any Linux distribtion.
+You can use several programs to achieve this, in this example we use `screen`, which is usually already installed in any Linux distribtion.
 
 First, start the program by typing (on login node):
 
@@ -205,7 +211,7 @@ First, start the program by typing (on login node):
 screen 
 ```
 
-A new terminal appears. You can start a process in it, disconnect from it, then reconnect at any time.
+A new terminal appears. You can start a process in it, disconnect from it, then reconnect at any time (`screen -r`).
 
 To start a new screen press `Ctrl-a`, then `c`. To run the pipeline:
 
@@ -233,6 +239,9 @@ jobinfo -u $USER
 
 The run on the complete data set will take several hours. 
 
+ </br>
+ </br>
+
 
 ## Statistical analysis using MAGeCK
 
@@ -240,7 +249,11 @@ The run on the complete data set will take several hours.
 This part is run on a remote server, i.e. Rackham.
 Login to Rackham first and inspect whether the pipeline run has finished.
 
-After the processing run will have completed, we can use its final output to perform statistical analysis. We will use (MAGeCK)[https://genomebiology.biomedcentral.com/articles/10.1186/s13059-014-0554-4] to perform robust rank aggregatoin (RRA) analysis. Detailed description of the program and its many options can be found at (MAGeCK homepage)[https://sourceforge.net/p/mageck/wiki/Home/].
+ </br>
+ </br>
+
+
+After the processing run will have completed, we can use its final output to perform statistical analysis. We will use [MAGeCK](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-014-0554-4) to perform robust rank aggregatoin (RRA) analysis. Detailed description of the program and its many options can be found at [MAGeCK homepage](/https://sourceforge.net/p/mageck/wiki/Home/]).
 
 Script `6257_mageck_wrapper.sh` handles the software modules and the commands. You can copy it from `$PIPELINE_DIR`:
 
@@ -248,15 +261,26 @@ Script `6257_mageck_wrapper.sh` handles the software modules and the commands. Y
 cp $PIPELINE_DIR/misc/mageck/6257_mageck_wrapper.sh .
 ```
 
+ </br>
+ </br>
+
+
 For a new analysis you will need to change some details (directory locations, sample names, contrasts, computing project allocation), the file is ready for the test run.
 
 Please bear in mind that **sample names have to be identical to samples in the header** of the counts tables `PROJ_PREFIX/results/count_table_processed/PROJ_PREFIX.counts_processed.*.tsv` where `PROJ_PREFIX` is `projname` in the config file. In practice, these names are `SMPL` derived from fastq file names `SMPL_R1/2_001.fastq`.
+
+ </br>
+ </br>
+
 
 After modyfying the script you can submit it to the queue:
 
 ```
 sbatch 6257_mageck_wrapper.sh
 ```
+
+ </br>
+ </br>
 
 Inspect the queue as before 
 
@@ -268,11 +292,17 @@ and after the run is over, you can also check the log file saved in the director
 
 The results are ready for report compilation.
 
+ </br>
+ </br>
+
 
 ## Report
 
 :computer:
 This part is run on a local computer.
+
+ </br>
+ </br>
 
 
 First, we need to copy the report data to the local computer.
@@ -287,11 +317,17 @@ We will need:
 
 * read summarisation statistics at `PROJ_PREFIX/results/read_logs/log_stats.txt`
 
+ </br>
+ </br>
+
 
 :office: :globe_with_meridians:
 This part is run on a remote server, i.e. Rackham.
 
 Login to Rackham first and inspect whether the pipeline run has finished. Copy the required directories using the method of choice.
+
+ </br>
+ </br>
 
 
 :computer:
