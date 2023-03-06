@@ -99,8 +99,8 @@ process trim_readsPE {
 
     output:
     tuple val(pair_id), path("${pair_id}.trimmed_merged_R1.fastq.gz"), path("${pair_id}.trimmed_merged_R2.fastq.gz"), emit: trimmed_reads_PE_ch
-    path("${pair_id}.cutadapt_trim_fwd.log")
-    path("${pair_id}.cutadapt_trim_rc.log")
+    path("${pair_id}.cutadapt_trim_fwd.log"), emit: trimlog_f_ch
+    path("${pair_id}.cutadapt_trim_rc.log"), emit: trimlog_r_ch
 
     script:
     """
@@ -190,6 +190,8 @@ process read_logs {
 
     input:
     path(readlogs_ch)
+    path(trimlog_f_ch)
+    path(trimlog_r_ch)
 
     output:
     path "log_stats.txt"
