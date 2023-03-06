@@ -285,18 +285,17 @@ We will need:
 
 * metadata files describing samples `metadata.txt` and comparisons `comparisons.txt` (examples can be found at `misc/metadata`)
 
-* read summarisation statistics at `PROJ_PREFIX/results/read_stats`
-
-Login to Rackham first and inspect whether the pipeline run has finished.
-
+* read summarisation statistics at `PROJ_PREFIX/results/read_logs/log_stats.txt`
 
 
 :office: :globe_with_meridians:
 This part is run on a remote server, i.e. Rackham.
-Login to Rackham first and inspect whether the pipeline run has finished.
+
+Login to Rackham first and inspect whether the pipeline run has finished. Copy the required directories using the method of choice.
+
+
+:computer:
+This part is run on a local computer.
 
 
 
-:office:
-
-:globe_with_meridians:
