@@ -219,7 +219,7 @@ You will see messages printed on the screen, as the run progresses.
 
 You can now disconnect from this process, by pressing `Ctrl-a` then `d`.
 
-You can now monitor the progression by checking jobs submitted to the queue for execution:
+You can now monitor the progression by checking jobs submitted to the queue:
 
 ```
 jobinfo -u $USER
