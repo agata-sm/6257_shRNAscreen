@@ -36,6 +36,8 @@ if (!require("BiocManager", quietly = TRUE))
 BiocManager::install(c("MAGeCKFlute","edgeR","org.Hs.eg.db")
 ```
 
+* `git` (installation instructions at https://git-scm.com/downloads)
+
 
  **Note**
  Please check that the software is installed before the training session, as installing all of it at once will take some time.
@@ -333,5 +335,10 @@ Login to Rackham first and inspect whether the pipeline run has finished. Copy t
 :computer:
 This part is run on a local computer.
 
+You will need the report template, script and other files for report compilation. You can get them by cloning this repository and copying the files in `misc/report` to your working directory.
 
+
+```
+git clone https://github.com/agata-sm/6257_shRNAscreen.git
+```
 
