@@ -159,10 +159,10 @@ workflow {
 	filt_bams_ch=filter_alns.out.filtered_ch
 	count_table(filt_bams_ch.collect())
 
-	trimlog_f_ch=trim_readsPE.out.trimlog_f_ch.collect()
-	trimlog_r_ch=trim_readsPE.out.trimlog_r_ch.collect()
+	//trimlog_f_ch=trim_readsPE.out.trimlog_f_ch.collect()
+	//trimlog_r_ch=trim_readsPE.out.trimlog_r_ch.collect()
 	filt_bams_logs_ch=filter_alns.out.readlogs_ch
-	read_logs(filt_bams_logs_ch.collect())
+	read_logs(filt_bams_logs_ch.collect(), trim_readsPE.out.trimlog_f_ch.collect(), trim_readsPE.out.trimlog_r_ch.collect())
 	
 	filt_count_table(count_table.out.count_table_ch)
 
