@@ -23,7 +23,7 @@ params.filt="filteredPE"
 params.filtOut="${params.outdir}/${params.filt}"
 
 params.filtLogs="read_logs"
-params.filtLogsOut="${params.outdir}/${params.filt}"
+params.filtLogsOut="${params.outdir}/${params.filtLogs}"
 
 params.cnttab="count_table"
 params.cnttabOut="${params.outdir}/${params.cnttab}"
