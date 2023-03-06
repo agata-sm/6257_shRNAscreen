@@ -175,7 +175,7 @@ nano shRNAproc.config
 
 ### make edits 
 ### in this case change nothing as the path is set already to test data
-## usually you need to chanhe the path to fastq files
+### usually you need to chanhe the path to fastq files
 ```
 
 To save file and quit, follow the instruction at the bottom of the screen. To quit is `Ctrl-X`, you get prompted if to save file, press `Y` and then `Enter` - we keep this current file name.
@@ -219,7 +219,7 @@ You will see messages printed on the screen, as the run progresses.
 
 You can now disconnect from this process, by pressing `Ctrl-a` then `d`.
 
-You can now monitor the progression by checking jobs submitted to tghe queue for execution:
+You can now monitor the progression by checking jobs submitted to the queue for execution:
 
 ```
 jobinfo -u $USER
