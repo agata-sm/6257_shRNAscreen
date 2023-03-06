@@ -102,7 +102,7 @@ The contents:
 
 * `nm` - number of mismatches to tolerate in alignments to pass the quality filter.
 
-Example of this file can be found in directory `proj-config-files`; The locations of `shLibraryFa`, `annot` and `libraryDescription` are set for the current storage project on Rackham and can be used without change.
+Example of this file can be found in directory `miscallaneous`; The locations of `shLibraryFa`, `annot` and `libraryDescription` are set for the current storage project on Rackham and can be used without change.
 
 **Note**
 Only `projname`  and its corresponding `fastqdir` need to be updated if `proj-config-files/shRNAproc.config` is used for pipeline run.
@@ -189,6 +189,8 @@ cat shRNAproc.config
 
 Now we are almost ready to start the pipeline. 
 
+### Running the shRNA seq processing pipeline
+
 It is most practical to run the pipeline in the background. (In fact this is the only viable way.) This protects the run from accidental session interruption - for example when you connect remotely to the server and the session disconnects.
 
 You can use several programs to achieve this, in this example we use screen, which is usually already installed in any Linux distribtion.
@@ -226,6 +228,12 @@ jobinfo -u $USER
 ```
 
 The run on the complete data set will take several hours. 
+
+
+## Statistical analysis using MAGeCK
+
+After the processing run will have completed, we can use its final output to perform statistical analysis. We will use (MAGeCK)[https://genomebiology.biomedcentral.com/articles/10.1186/s13059-014-0554-4] to perform robust rank aggregatoin (RRA) analysis. Detailed description of the program and its many options can be found at (MAGeCK homepage)[https://sourceforge.net/p/mageck/wiki/Home/].
+
 
 
 
