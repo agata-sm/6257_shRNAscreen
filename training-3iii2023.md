@@ -107,11 +107,26 @@ Example of this file can be found in directory `proj-config-files`; The location
 **Note**
 Only `projname`  and its corresponding `fastqdir` need to be updated if `proj-config-files/shRNAproc.config` is used for pipeline run.
 
-Please see NBIS Project Report for documentation on how `shLibraryFa`, `annot` and `libraryDescription` were obtained.
+Please see NBIS Project Report for documentation on how `shLibraryFa`, `annot` and `libraryDescription` were obtained. Shortened examples are given in directory `library`.
+
 
 #### Comment on naming fastq files
 
-Depending on the sequencing provider, naming of fastq files may follow different conventions. The processing pipeline requires that the files contain suffix `R1_001.fastq` (e.g. `M10_R1_001.fastq.gz`). Fastq files may be compressed (`.gz`) or not (gzipped files are recommended).
+Depending on the sequencing provider, naming of fastq files may follow different conventions. The processing pipeline requires that the files contain suffix `R1_001.fastq` and `R2_001.fastq` (e.g. `M10_R1_001.fastq.gz`). Fastq files may be compressed (`.gz`) or not (gzipped files are recommended though, to save space).
+
+While this is not a strict requirement, I recommend to shorten file names to follow a convention `SMPL_R1/2_001.fastq.gz` where `SMPL` is sample name. This is because the part of file names prior to `_R1/2_001.fastq` will be used to name output files and as sample ID in the report. As a consequence, file names of style `P1234_FXNNB55578_R1_001.fastq` will result in hard to read reports. At the same time, it is considered best practice to keep the original file names of raw data. One way to address this seemingly contradictory situation without resorting to copying files under redacted names is to **create soft links** to fastq files.
+
+For example, in desired location which will be used as `fastqdir` in the config file:
+
+```
+ln -s /path/to/data/P1234_FXNNB55578_R1_001.fq.gz SMPL1_R1_001.fastq.gz
+```
+
+Link `SMPL1_R1_001.fastq.gz` will point to the original file `path/to/data/P1234_FXNNB55578_R1_001.fq.gz`.
+
+Please bear in mind that when creating links it is **essential** to create *soft links* by using `ln -s` and not just `ln` - the latter may lead to accidentally removing the original file and data loss.
+
+
 
 
 ### Preparation
@@ -135,11 +150,82 @@ cd analysis
 
 You will create a directory for each pipeline run, and change to it, for example:
 
-
 ```
 mkdir testrun1
 cd testrun1
 ```
+
+To shorten the commands, you can create a variable which holds the path to the pipeline directory:
+
+```
+export PIPELINE_DIR="/proj/snic2022-23-333/nobackup/private/agata/nbis6257/tsts/6257_shRNAscreen/"
+```
+
+
+Copy the config file `shRNAproc.config` from the pipeline directory to your working directory:
+
+```
+cp $PIPELINE_DIR/shRNA-proc/shRNAproc.config .
+```
+
+You can now modify the config file to the needs of the current analysis. In this example we do this by using a simple text editor `nano`, but you can also prepare it beforehand on your local computer using text editor.
+
+```
+nano shRNAproc.config
+
+### make edits 
+### in this case change nothing as the path is set already to test data
+## usually you need to chanhe the path to fastq files
+```
+
+To save file and quit, follow the instruction at the bottom of the screen. To quit is `Ctrl-X`, you get prompted if to save file, press `Y` and then `Enter` - we keep this current file name.
+
+You can inspect the contents of this changed file, to confirm all is as it should be:
+
+
+```
+cat shRNAproc.config
+```
+
+Now we are almost ready to start the pipeline. 
+
+It is most practical to run the pipeline in the background. (In fact this is the only viable way.) This protects the run from accidental session interruption - for example when you connect remotely to the server and the session disconnects.
+
+You can use several programs to achieve this, in this example we use screen, which is usually already installed in any Linux distribtion.
+
+First, start the program by typing (on login node):
+
+```
+screen 
+```
+
+A new terminal appears. You can start a process in it, disconnect from it, then reconnect at any time.
+
+To start a new screen press `Ctrl-a`, then `c`. To run the pipeline:
+
+```
+module load java/OracleJDK_11.0.9
+module load bioinfo-tools
+module load Nextflow/22.10.1
+
+APPTAINERENV_TMPDIR="/proj/snic2022-23-333/nobackup/private/agata/nbis6257/containers"
+
+NXF_HOME="/proj/snic2022-23-333/nobackup/private/agata/nbis6257/analysis/nf"
+
+nextflow run $PIPELINE_DIR/shRNA-proc/shRNAproc.nf -profile cluster,singularity -c shRNAproc.config
+```
+
+You will see messages printed on the screen, as the run progresses.
+
+You can now disconnect from this process, by pressing `Ctrl-a` then `d`.
+
+You can now monitor the progression by checking jobs submitted to tghe queue for execution:
+
+```
+jobinfo -u $USER
+```
+
+The run on the complete data set will take several hours. 
 
 
 
