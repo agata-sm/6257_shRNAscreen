@@ -1,0 +1,16 @@
+file	sample	condition
+M37_R1_001.fastq	M37	untreated
+M38_R1_001.fastq	M38	untreated
+M39_R1_001.fastq	M39	untreated
+M40_R1_001.fastq	M40	untreated
+M41_R1_001.fastq	M41	untreated
+M42_R1_001.fastq	M42	untreated
+M43_R1_001.fastq	M43	treated
+M44_R1_001.fastq	M44	treated
+M45_R1_001.fastq	M45	treated
+M46_R1_001.fastq	M46	treated
+M47_R1_001.fastq	M47	treated
+M48_R1_001.fastq	M48	treated
+OVCAR3-ct1_R1_001.fastq	OVCAR3-ct1	ctrl
+OVCAR3-ct2_R1_001.fastq	OVCAR3-ct2	ctrl
+OVCAR3-ct3_R1_001.fastq	OVCAR3-ct3	ctrl

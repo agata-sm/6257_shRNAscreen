@@ -1,0 +1,51 @@
+flowchart TD
+    p0((Channel.fromFilePairs))
+    p1((Channel.fromPath))
+    p2((Channel.fromPath))
+    p3[idx]
+    p4([flatten])
+    p5([collect])
+    p6([map])
+    p7[trim_readsPE]
+    p8(( ))
+    p9(( ))
+    p10([combine])
+    p11[mapPE]
+    p12[filter_reads]
+    p13(( ))
+    p14([collect])
+    p15[count_table]
+    p16(( ))
+    p17[filt_count_table]
+    p18(( ))
+    p19(( ))
+    p20(( ))
+    p21[fastqc]
+    p22([collect])
+    p23[multiqc]
+    p24(( ))
+    p25(( ))
+    p0 -->|read_pairs| p7
+    p1 -->|fastqr1_ch2| p21
+    p2 -->|fa_ch| p3
+    p3 -->|idx_bowtie_ch| p4
+    p4 --> p5
+    p5 --> p6
+    p6 -->|idx_bowtie_ch| p10
+    p7 -->|map_readsPE_ch| p10
+    p7 --> p9
+    p7 --> p8
+    p10 -->|map_readsPE_ch| p11
+    p11 --> p12
+    p12 -->|filt_bams_ch| p14
+    p12 --> p13
+    p14 --> p15
+    p15 --> p17
+    p15 --> p16
+    p17 --> p20
+    p17 --> p19
+    p17 --> p18
+    p21 -->|multiqc_ch| p22
+    p22 --> p23
+    p23 --> p25
+    p23 --> p24
