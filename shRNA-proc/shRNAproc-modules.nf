@@ -22,11 +22,14 @@ params.mapOut="${params.outdir}/${params.map}"
 params.filt="filteredPE"
 params.filtOut="${params.outdir}/${params.filt}"
 
+params.filtLogs="read_logs"
+params.filtLogsOut="${params.outdir}/${params.filtLogs}"
+
 params.cnttab="count_table"
 params.cnttabOut="${params.outdir}/${params.cnttab}"
 
-params.mageck="mageck_rra"
-params.mageckOut="${params.outdir}/${params.mageck}"
+params.cnttabProc="count_table_processed"
+params.cnttabProcOut="${params.outdir}/${params.cnttabProc}"
 
 // format adapter strings
 params.adastring_fwd="${params.ada5}...${params.ada3}"
@@ -95,28 +98,29 @@ process trim_readsPE {
     tuple val(pair_id), path(reads)
 
     output:
-    tuple val(pair_id), path("${pair_id}.trimmed_merged_R1.fastq"), path("${pair_id}.trimmed_merged_R2.fastq"), emit: trimmed_reads_PE_ch
-    path("${pair_id}.cutadapt_trim_fwd.log")
-    path("${pair_id}.cutadapt_trim_rc.log")
+    tuple val(pair_id), path("${pair_id}.trimmed_merged_R1.fastq.gz"), path("${pair_id}.trimmed_merged_R2.fastq.gz"), emit: trimmed_reads_PE_ch
+    path("${pair_id}.cutadapt_trim_fwd.log"), emit: trimlog_f_ch
+    path("${pair_id}.cutadapt_trim_rc.log"), emit: trimlog_r_ch
 
     script:
     """
     
     cutadapt -e 0.1 -O 30 -m 48 -M 50  -a $params.adastring_fwd -A $params.adastring_rc --pair-filter=both \
-    --untrimmed-output ${pair_id}.noada.trimFwd.r1.fastq --untrimmed-paired-output ${pair_id}.noada.trimFwd.r2.fastq \
-    --too-long-output ${pair_id}.toolong.trimFwd.r1.fastq --too-long-paired-output ${pair_id}.toolong.trimFwd.r2.fastq \
-    -o ${pair_id}.trimFwd.r1.fastq -p ${pair_id}.trimFwd.r2.fastq $reads >${pair_id}.cutadapt_trim_fwd.log 2>&1
+    --untrimmed-output ${pair_id}.noada.trimFwd.r1.fastq.gz --untrimmed-paired-output ${pair_id}.noada.trimFwd.r2.fastq.gz \
+    --too-long-output ${pair_id}.toolong.trimFwd.r1.fastq.gz --too-long-paired-output ${pair_id}.toolong.trimFwd.r2.fastq.gz \
+    -o ${pair_id}.trimFwd.r1.fastq.gz -p ${pair_id}.trimFwd.r2.fastq.gz $reads >${pair_id}.cutadapt_trim_fwd.log 2>&1
 
-    cat ${pair_id}.noada.trimFwd.r1.fastq ${pair_id}.toolong.trimFwd.r1.fastq >${pair_id}.untrimmed.trimFwd.r1.fastq
-    cat ${pair_id}.noada.trimFwd.r2.fastq ${pair_id}.toolong.trimFwd.r2.fastq >${pair_id}.untrimmed.trimFwd.r2.fastq
+    cat ${pair_id}.noada.trimFwd.r1.fastq.gz ${pair_id}.toolong.trimFwd.r1.fastq.gz >${pair_id}.untrimmed.trimFwd.r1.fastq.gz
+    cat ${pair_id}.noada.trimFwd.r2.fastq.gz ${pair_id}.toolong.trimFwd.r2.fastq.gz >${pair_id}.untrimmed.trimFwd.r2.fastq.gz
 
     cutadapt -e 0.1 -O 30 -m 48 -M 50  -A $params.adastring_fwd -a $params.adastring_rc --pair-filter=both \
-    --untrimmed-output ${pair_id}.noada.trimRc.r1.fastq --untrimmed-paired-output ${pair_id}.noada.trimRc.r2.fastq \
-    --too-long-output ${pair_id}.toolong.trimRc.r1.fastq --too-long-paired-output ${pair_id}.toolong.trimRc.r2.fastq \
-    -o ${pair_id}.trimRc.r1.fastq -p ${pair_id}.trimRc.r2.fastq ${pair_id}.untrimmed.trimFwd.r1.fastq ${pair_id}.untrimmed.trimFwd.r2.fastq >${pair_id}.cutadapt_trim_rc.log 2>&1
+    --untrimmed-output ${pair_id}.noada.trimRc.r1.fastq.gz --untrimmed-paired-output ${pair_id}.noada.trimRc.r2.fastq.gz \
+    --too-long-output ${pair_id}.toolong.trimRc.r1.fastq.gz --too-long-paired-output ${pair_id}.toolong.trimRc.r2.fastq.gz \
+    -o ${pair_id}.trimRc.r1.fastq.gz -p ${pair_id}.trimRc.r2.fastq.gz \
+    ${pair_id}.untrimmed.trimFwd.r1.fastq.gz ${pair_id}.untrimmed.trimFwd.r2.fastq.gz >${pair_id}.cutadapt_trim_rc.log 2>&1
 
-    cat ${pair_id}.trimFwd.r1.fastq ${pair_id}.trimRc.r1.fastq > ${pair_id}.trimmed_merged_R1.fastq
-    cat ${pair_id}.trimFwd.r2.fastq ${pair_id}.trimRc.r2.fastq > ${pair_id}.trimmed_merged_R2.fastq
+    cat ${pair_id}.trimFwd.r1.fastq.gz ${pair_id}.trimRc.r1.fastq.gz > ${pair_id}.trimmed_merged_R1.fastq.gz
+    cat ${pair_id}.trimFwd.r2.fastq.gz ${pair_id}.trimRc.r2.fastq.gz > ${pair_id}.trimmed_merged_R2.fastq.gz
 
     """
 }
@@ -138,7 +142,7 @@ process mapPE {
     """
 }
 
-process filter_reads {
+process filter_alns {
     publishDir params.filtOut, mode:'copy'
     label 'small'
 
@@ -147,14 +151,14 @@ process filter_reads {
 
     output:
     path "${pair_id}.mapped.filt_mapq255_NM${params.nm}.bowtie2.bam", emit: filtered_ch
-    path "${pair_id}.read_stats.log"
+    path "${pair_id}.read_stats.log", emit: readlogs_ch
 
 
     script:
     """
-    module load bioinfo-tools
-    module load samtools/1.8
-    module load NGSUtils/0.5.9
+    #module load bioinfo-tools
+    #module load samtools/1.8
+    #module load NGSUtils/0.5.9
 
     echo "all R1 alignments (proxy for aligned read pairs) in sample ${pair_id}" >${pair_id}.read_stats.log
     echo "aligned read pairs: `samtools view -f 64 $bam_unfilt | wc -l`" >>${pair_id}.read_stats.log
@@ -180,6 +184,26 @@ process filter_reads {
 }
 
 
+process read_logs {
+    publishDir params.filtLogsOut, mode:'copy'
+    label 'small'
+
+    input:
+    path(readlogs_ch)
+    path(trimlog_f_ch)
+    path(trimlog_r_ch)
+
+    output:
+    path "log_stats.txt"
+
+    script:
+
+    """
+    perl ${params.scripts}/6257_parse_logs.pl --outdir .
+    """
+
+}
+
 process count_table {
     publishDir params.cnttabOut, mode:'copy'
     label 'mid_mem'
@@ -194,13 +218,38 @@ process count_table {
 
     script:
     """
-    module load bioinfo-tools
-    module load subread/2.0.3
+    #module load bioinfo-tools
+    #module load subread/2.0.3
     
-    featureCounts -p --countReadPairs --fracOverlap 0.958 -F SAF -a ${params.annot} -o ${params.projname}.counts $bam_filt
+    featureCounts -p -B -C --fracOverlap 0.958 -F SAF -a ${params.annot} -o ${params.projname}.counts $bam_filt
     """
 }
 
+process filt_count_table {
+    publishDir params.cnttabProcOut, mode:'copy'
+    label 'small'
+
+    input:
+    path(count_table_ch)
+
+    output:
+    path "${params.projname}.counts_processed.all.tsv"
+    path "${params.projname}.counts_processed.0rm.tsv"
+    path "${params.projname}.counts_processed.0rm_noAlt.tsv"
+
+
+    script:
+    """
+    #module load bioinfo-tools
+    #module load perl/5.26.2
+
+    perl ${params.scripts}/6257_proc_cnt_table.pl --infile ${params.projname}.counts --outfile  ${params.projname}.counts_processed.all.tsv --library ${params.libraryDescription} --setup all
+
+    perl ${params.scripts}/6257_proc_cnt_table.pl --infile ${params.projname}.counts --outfile  ${params.projname}.counts_processed.0rm.tsv --library ${params.libraryDescription} --setup 0rm
+
+    perl ${params.scripts}/6257_proc_cnt_table.pl --infile ${params.projname}.counts --outfile  ${params.projname}.counts_processed.0rm_noAlt.tsv --library ${params.libraryDescription} --setup 0rm_noAlt
+    """
+}
 
 
 

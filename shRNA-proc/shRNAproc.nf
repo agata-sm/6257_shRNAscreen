@@ -119,7 +119,7 @@ fa_ch=Channel.fromPath(params.shLibraryFa , checkIfExists:true)
 
 /////////////////////////////
 // processes
-include { fastqc; multiqc; idx; trim_readsPE; mapPE; filter_reads; count_table } from './shRNAproc-modules.nf'
+include { fastqc; multiqc; idx; trim_readsPE; mapPE; filter_alns; count_table; filt_count_table; read_logs } from './shRNAproc-modules.nf'
 
 
 
@@ -154,10 +154,17 @@ workflow {
 
 	mapPE(map_readsPE_ch)
 	
-	filter_reads(mapPE.out.mappedPE_ch)
+	filter_alns(mapPE.out.mappedPE_ch)
 
-	filt_bams_ch=filter_reads.out.filtered_ch
+	filt_bams_ch=filter_alns.out.filtered_ch
 	count_table(filt_bams_ch.collect())
+
+	//trimlog_f_ch=trim_readsPE.out.trimlog_f_ch.collect()
+	//trimlog_r_ch=trim_readsPE.out.trimlog_r_ch.collect()
+	filt_bams_logs_ch=filter_alns.out.readlogs_ch
+	read_logs(filt_bams_logs_ch.collect(), trim_readsPE.out.trimlog_f_ch.collect(), trim_readsPE.out.trimlog_r_ch.collect())
+	
+	filt_count_table(count_table.out.count_table_ch)
 
 	//QC
 	fastqc(fastqr1_ch2)
