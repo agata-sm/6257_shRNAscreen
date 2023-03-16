@@ -326,6 +326,9 @@ We will need:
 
 * read summarisation statistics at `PROJ_PREFIX/results/read_logs/log_stats.txt`
 
+We will copy the files / directories to one directory on the local system.
+
+
  </br>
  </br>
 
