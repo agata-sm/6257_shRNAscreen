@@ -1,0 +1,4 @@
+name	reference	treatment
+M43_48_vs_M37_42	untreated	treated
+M43_48_vs_ctrl	ctrl	untreated
+M37_42_vs_ctrl	ctrl	treated

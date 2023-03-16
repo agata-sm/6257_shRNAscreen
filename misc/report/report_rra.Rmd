@@ -1,0 +1,420 @@
+<!-- 
+This is a child document for presentation and analysis of RRA results (Mageck)
+to be used with screen_report.v0.x.R
+
+ -->
+
+
+
+```{r include=FALSE,cache=FALSE}
+
+library(knitr)
+library(bookdown)
+
+
+knitr::opts_chunk$set(echo = FALSE, 
+                      collapse = TRUE, 
+                      warning = FALSE, 
+                      message = FALSE)
+
+
+source("./shRNA_screen_report_functions.R")
+
+```
+
+
+### Comparison: `r i` {.tabset}
+
+```{r include=FALSE,cache=FALSE}
+indir.i=file.path(mageck_datadir,i)
+
+infile.pth.gene.i=file.path(indir.i,paste(i,"gene_summary.txt",sep="."))
+infile.pth.sgRNA.i=file.path(indir.i,paste(i,"sgrna_summary.txt",sep="."))
+
+gdata_i_lfc = ReadRRA(infile.pth.gene.i,score="lfc")
+gdata_i_RRA = ReadRRA(infile.pth.gene.i,score="RRA")
+
+
+ref.smpl=contrasts.tab$reference[contrasts.tab$name==i]
+treat.smpl=contrasts.tab$treatment[contrasts.tab$name==i]
+
+
+resdir.i=file.path(resdir,i)
+dir.create(resdir.i)
+plotdir.i=file.path(resdir.i,"plots")
+dir.create(plotdir.i)
+
+all.res.rra[[i]]=gdata_i_RRA
+```
+
+This section refers to the comparison **`r i` : `r treat.smpl` vs. `r ref.smpl`**
+
+<br />
+<br />
+
+```{r include=FALSE, cache=FALSE}
+rep.g.i=read.table(infile.pth.gene.i, sep="\t", header=TRUE)
+rep.sg.i=read.table(infile.pth.sgRNA.i, sep="\t", header=TRUE)
+
+all.res[[i]]=rep.g.i
+
+
+```
+
+
+```{r include=FALSE, cache=TRUE}
+
+
+# from Hs db
+gene_names=data.frame(mapIds(org.Hs.eg.db, keys=rep.g.i$id, keytype="REFSEQ", column="GENENAME", multiVals="first"))
+gene_names$id=rownames(gene_names)
+colnames(gene_names)=c("description","id")
+gene_symbols=data.frame(mapIds(org.Hs.eg.db, keys=rep.g.i$id, keytype="REFSEQ", column="SYMBOL", multiVals="first"))
+gene_symbols$id=rownames(gene_symbols)
+colnames(gene_symbols)=c("symbol","id")
+gene_names=left_join(gene_names,gene_symbols)
+
+gene_entrez=data.frame(mapIds(org.Hs.eg.db, keys=rep.g.i$id, keytype="REFSEQ", column="ENTREZID", multiVals="first"))
+gene_entrez$id=rownames(gene_entrez)
+colnames(gene_entrez)=c("entrezgene_id","id")
+
+# from library_desc
+geneannot=left_join(gene_names,gene_entrez)
+shannot=left_join(geneannot,library_desc[,-9], by="id")
+
+```
+
+```{r include=FALSE, cache=FALSE}
+rep.g.i.annot=left_join(rep.g.i,geneannot,by="id")
+
+
+rep.g_neg=rep.g.i.annot[,c(1,16,15,2:8,17)]
+rep.g_pos=rep.g.i.annot[,c(1,16,15,2,9:14,17)]
+
+rep.g_neg=rep.g_neg[order(rep.g_neg$neg.rank, decreasing=FALSE),]
+rep.g_pos=rep.g_pos[order(rep.g_pos$pos.rank, decreasing=FALSE),]
+
+tab_n_sv=tab_n_sv+1
+fname=paste("Table",tab_n_sv,"RRA_mageck",i,"tsv",sep=".")
+save.table(df=rep.g.i.annot, file=fname, dir=resdir.i)
+```
+
+
+#### Summary
+
+Results of robust rank aggregation (RRA) analysis (MAGeCK) to identify significantly enriched or depleted sgRNAs are presented separately in sections below.
+
+There are **n= `r nrow(rep.g_neg[rep.g_neg$neg.fdr<=0.05,])` ** hits with **FDR <= 0.05** in the test for **negative selection** in `r i`.
+
+There are **n= `r nrow(rep.g_pos[rep.g_pos$pos.fdr<=0.05,])` ** hits with **FDR <= 0.05** in the test for **positive selection** in `r i`.
+
+N = `r nrow(rep.g.i.annot)` genes were detected in the data.
+
+The entire table can be explored in file **`r fname`**.
+
+
+<br />
+<br />
+
+##### Negative Selection
+
+```{r cache=FALSE}
+tab_n=tab_n+1
+tablabel=paste(tab_n, "Table", sep="")
+```
+
+Results of robust rank aggregation (RRA) analysis (MAGeCK) to identify **depleted genes** are presented in Table \@ref(tab:`r tablabel`). Top 100 rows (by `neg.rank`) are included. 
+
+
+Fields in the table:
+
+* `id` gene id
+
+* `description` of gene product
+
+* `num` number of shRNA probes targeting the gene
+
+* `score` RRA score by MAGeCK
+
+* `p value` uncorrected p value from the RRA test
+
+* `FDR` false discovery rate, i.e. p value adjusted for multiple comparisons
+
+* `rank` position on a gene list ranked by the RRA score
+
+* `good-shRNA` (originally `goodsgRNA`) number of shRNAs whose ranking is below the alpha cutoff (0 in this case); i.e. number of probes following the expected log2FC for negative selection
+
+* `log2FC` (`lfc` in the source file) gene level log2(fold change)
+
+
+Fields specific to **negative** selection are prefixed with `neg` in the source table `r ctable_fname`.
+
+
+<br />
+
+```{r cache=FALSE, results='asis'}
+capt=paste("Summary of gene level analysis of ",i," negative selection (MAGeCK). Shown are top 100 genes (by \"neg.rank\").", sep="")
+test_table(capt, label=tablabel)
+
+tbl_report=rep.g_neg[,1:10]
+colnames(tbl_report)=c("Id","Symbol","Description","Number of shRNAs per gene","Score","p value","FDR","Rank","good-shRNA","log2FC")
+DT::datatable(tbl_report %>% filter(Rank <=100), rownames = FALSE) %>% formatSignif(columns=c('FDR','Score','p value','log2FC'), digits=4)
+```
+
+
+
+
+
+<br />
+<br />
+
+##### Positive Selection
+
+```{r cache=FALSE}
+tab_n=tab_n+1
+tablabel=paste(tab_n, "Table", sep="")
+```
+
+Results of robust rank aggregation (RRA) analysis (MAGeCK) to identify **enriched genes** are presented in Table \@ref(tab:`r tablabel`). Top 100 rows (by `Rank`) are included. 
+
+Fields in the table:
+
+* `id` gene id
+
+* `description` of gene product
+
+* `num` number of shRNA probes targeting the gene
+
+* `score` RRA score by MAGeCK
+
+* `p value` uncorrected p value from the RRA test
+
+* `FDR` false discovery rate, i.e. p value adjusted for multiple comparisons
+
+* `rank` position on a gene list ranked by the RRA score
+
+* `good-shRNA` (originally `goodsgRNA`) number of shRNAs whose ranking is below the alpha cutoff (0 in this case);  i.e. number of probes following the expected log2FC for positive selection
+
+* `log2FC` (`lfc` in the source file) gene level log2(fold change)
+
+
+Fields specific to **positive** selection are prefixed with `pos` in the source table `r ctable_fname`.
+
+
+
+<br />
+
+```{r cache=FALSE, results='asis'}
+capt=paste("Summary of gene level analysis of ",i," , positive selection (MAGeCK). Shown are top 100 genes (by \"Rank\").", sep="")
+test_table(capt, label=tablabel)
+tbl_report=rep.g_pos[,1:10]
+colnames(tbl_report)=c("Id","Symbol","Description","Number of shRNAs per gene","Score","p value","FDR","Rank","good-shRNA","log2FC")
+DT::datatable(tbl_report %>% filter(Rank <=100), rownames = FALSE) %>% formatSignif(columns=c('FDR','Score','p value','log2FC'), digits=4)
+```
+
+
+
+#### Interactive Volcano Plot
+
+
+
+```{r include=FALSE, warning=FALSE}
+
+dat=gdata_i_lfc
+xaxis="Effect size (log2-fold change)"
+
+
+dat$group="ns"
+dat$group[dat$FDR<=FDR.CO] <-"sig"
+dat$logFDR=-(log10(dat$FDR))
+
+dat$group[dat$group=="sig" & dat$Score>0] <-"up"
+dat$group[dat$group=="sig" & dat$Score<0] <-"dn"
+
+#dat_plot=dat[dat$FDR<=0.8,]
+
+dat_plot=dat
+
+p_v1=ggplot(dat_plot, aes(x=Score, y=logFDR, color=group, text=paste(id,"; Score",round(Score, digits=3),"; FDR",round(FDR, digits=4)))) + 
+  geom_point(alpha=0.5) + scale_color_manual(values=mycolour) +
+  theme_bw() + theme(legend.position = "none")+
+  ylab("-log10(FDR)") + xlab(xaxis)
+
+
+# geom_vline(xintercept=1.5, linetype="dashed", color = "grey50") + geom_vline(xintercept=-1.5, linetype="dashed", color = "grey50") +  
+# geom_hline(yintercept=-log10(0.05), linetype="dashed", color = "grey50")
+
+figurecap=paste("Volcano plot for comparison ",i,". Genes with changes at FDR below the significance cutoff FDR=",FDR.CO, " are coloured. Only genes with FDR<=0.8 are shown.", sep="")
+
+
+fig_n=fig_n+1
+fname=paste("Figure",fig_n,"Volcano",i,"pdf",sep=".")
+pdf(file.path(plotdir.i,fname))
+p_v1 + ggtitle(figurecap)
+dev.off()
+
+
+
+p_v1=ggplotly(p_v1, tooltip=c("text"))
+
+
+```
+
+
+
+Volcano plot shows statistical significance as False Discovery Rate, FDR (here shown as -log10(FDR)) versus magnitude of change 
+(log2(fold change)).
+It enables quick visual identification of genes with large fold changes that are also statistically significant.
+
+The results of abundance analysis at the gene level are visualised on the interactive volcano plot where the statistically significant genes
+(FDR<=0.05) are coloured. 
+#Please note only genes with FDR<=0.8 are plotted (n=`r nrow(dat_plot)`).
+
+
+This plot is saved as a static plot in file
+
+ `r paste0(fname, " .")`
+
+
+
+```{r dev='png', fig.show='show',fig.dim=c(6, 6), cache=FALSE, fig.cap=figurecap}
+p_v1
+```
+
+
+#### Rank Plots
+
+##### Gene Level
+
+```{r include=FALSE}
+
+dat=gdata_i_lfc
+
+
+
+dat$group="ns"
+dat$group[dat$FDR<=FDR.CO] <-"sig"
+dat$logFDR=-(log10(dat$FDR))
+
+dat$group[dat$group=="sig" & dat$Score>0] <-"up"
+dat$group[dat$group=="sig" & dat$Score<0] <-"dn"
+
+
+
+dat$Rank = rank(dat$Score)
+
+#dat_plot=dat[dat$FDR<=0.8,]
+dat_plot=dat
+
+p4_v1=ggplot(dat_plot, aes(x=Score, y=Rank, color=group, text=paste(id,"; Score",round(Score, digits=3),"; Rank",Rank))) +  geom_point(alpha=0.5) + scale_color_manual(values=mycolour) +
+theme_bw() + theme(legend.position = "none")# +
+# geom_vline(xintercept=1.5, linetype="dashed", color = "grey50") + geom_vline(xintercept=-1.5, linetype="dashed", color = "grey50") +  
+# geom_hline(yintercept=-log10(0.05), linetype="dashed", color = "grey50")
+
+
+figurecap=paste("Gene rank plot for comparison ",i,". Genes with changes at FDR below the significance cutoff FDR=",FDR.CO, " are coloured. Only genes with FDR<=0.8 are shown.", sep="")
+
+
+fig_n=fig_n+1
+fname=paste("Figure",fig_n,"GeneRank",i,"pdf",sep=".")
+pdf(file.path(plotdir.i,fname))
+p4_v1+ ggtitle(figurecap)
+dev.off()
+
+
+p4_v1=ggplotly(p4_v1, tooltip=c("text"))
+
+```
+
+
+Gene rank plot depicts the relationship of gene rank and its fold change in treatment vs control (presented as log2(fold change), log2FC).
+#Please note only genes with FDR<=0.8 are plotted (n=`r nrow(dat_plot)`).
+
+
+This plot is interactive. Its static version is saved in file `r fname`.
+
+
+```{r dev='png', echo=FALSE, fig.show='show',fig.dim=c(6, 6), cache=FALSE, fig.cap=figurecap}
+p4_v1
+```
+
+
+
+<br />
+<br />
+
+##### shRNA Level
+
+
+
+```{r include=FALSE, warning=FALSE}
+
+sdata_rra = ReadsgRRA(infile.pth.sgRNA.i)
+p2 = sgRankView(sdata_rra, top = 5, bottom = 5)
+
+
+sdata_symbol=sdata_rra
+colnames(sdata_symbol)=c("sgrna","id","LFC","FDR")
+sdata_symbol=left_join(sdata_symbol,gene_symbols)
+sdata_symbol$Gene=paste(sdata_symbol$symbol,sdata_symbol$id,sep="..")
+sdata_symbol=sdata_symbol[,c(1,6,3,4)]
+colnames(sdata_symbol)=c("sgrna","Gene","LFC","FDR")
+
+
+#sdata=sdata_rra
+sdata=sdata_symbol
+
+figurecap1=paste("shRNA ranks for comparison ",i,".\nTop genes in negative selection (by neg.rank) are shown (top genes at the bottom of the plot).\n shRNAs are coloured by their fold change direction.", sep="")
+figurecap2=paste("shRNA ranks for comparison ",i,".\nTop genes in positive selection (by pos.rank) are shown (top genes at the bottom of the plot).\n shRNAs are coloured by their fold change direction.", sep="")
+
+  # here do this for top 10 and save to files for top 20
+  sel.dat=rep.g_neg %>% arrange(neg.rank) %>% filter(neg.rank <=20)
+  sel.genes_join=paste(sel.dat$symbol[1:10],sel.dat$id[1:10],sep="..")
+  p2.1 = sgRankView(sdata, gene=sel.genes_join, top=0, bottom=0)
+
+  sel.genes_join=paste(sel.dat$symbol,sel.dat$id,sep="..")
+  p2.3 = sgRankView(sdata, gene=sel.genes_join, top=0, bottom=0) + ggtitle(figurecap1)
+
+
+  sel.dat=rep.g_pos %>% arrange(pos.rank) %>% filter(pos.rank <=20)
+  sel.genes_join=paste(sel.dat$symbol[1:10],sel.dat$id[1:10],sep="..")
+  p2.2 = sgRankView(sdata, gene=sel.genes_join, top=0, bottom=0)
+  sel.genes_join=paste(sel.dat$symbol,sel.dat$id,sep="..")
+  p2.4 = sgRankView(sdata, gene=sel.genes_join, top=0, bottom=0) + ggtitle(figurecap2)
+
+
+
+  graphics.off()
+  fig_n=fig_n+1
+  ggsave(filename=paste("Figure",fig_n,"shRNA_ranks_positive",i,"pdf",sep="."),plot=p2.4,path=plotdir.i,device="pdf")
+
+  graphics.off()
+  fig_n=fig_n+1
+  ggsave(filename=paste("Figure",fig_n,"shRNA_ranks_negative",i,"pdf",sep="."),plot=p2.3,path=plotdir.i,device="pdf")
+
+
+```
+
+
+
+Visualisation of ranks of individual shRNAs targeting each gene adds more information to gene level results.
+
+The guide rank plots visualize the rank of shRNAs targeting top genes (n=10) under negative and positive selection. 
+Rank plots for top 20 genes changed in each direction are saved in file
+ `r paste0(fname, " .")`
+
+
+
+```{r dev='png', echo=FALSE, fig.show='show',fig.dim=c(6, 6), cache=FALSE, fig.cap=figurecap1}
+p2.1
+```
+
+
+```{r dev='png', echo=FALSE, fig.show='show',fig.dim=c(6, 6), cache=FALSE, fig.cap=figurecap2}
+p2.2
+```
+
+
+
+
+
