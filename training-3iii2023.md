@@ -135,7 +135,7 @@ For example, in desired location which will be used as `fastqdir` in the config 
 ln -s /path/to/data/P1234_FXNNB55578_R1_001.fq.gz SMPL1_R1_001.fastq.gz
 ```
 
-Link `SMPL1_R1_001.fastq.gz` will point to the original file `path/to/data/P1234_FXNNB55578_R1_001.fq.gz`.
+Link `SMPL1_R1_001.fastq.gz` will point to the original file `/path/to/data/P1234_FXNNB55578_R1_001.fq.gz`.
 
 Please bear in mind that when creating links it is **essential** to create *soft links* by using `ln -s` and not just `ln` - the latter may lead to accidentally removing the original file and data loss.
 
@@ -152,7 +152,9 @@ To start with, you need to change the directory to project directory:
 
 
 ```
-cd /proj/snic2022-23-410/nobackup/private
+#cd /proj/snic2022-23-410/nobackup/private
+
+cd /proj/snic2022-23-333/nobackup/private/agata/nbis6257/alexandra
 ```
 
 Let's keep the analysis from other parts of the project:
@@ -227,9 +229,9 @@ module load java/OracleJDK_11.0.9
 module load bioinfo-tools
 module load Nextflow/22.10.1
 
-APPTAINERENV_TMPDIR="/proj/snic2022-23-333/nobackup/private/agata/nbis6257/containers"
+export APPTAINERENV_TMPDIR="/proj/snic2022-23-333/nobackup/private/agata/nbis6257/containers"
 
-NXF_HOME="/proj/snic2022-23-333/nobackup/private/agata/nbis6257/analysis/nf"
+export NXF_HOME="/proj/snic2022-23-333/nobackup/private/agata/nbis6257/analysis/nf"
 
 nextflow run $PIPELINE_DIR/shRNA-proc/shRNAproc.nf -profile cluster,singularity -c shRNAproc.config
 ```
