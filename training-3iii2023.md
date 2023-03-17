@@ -325,8 +325,67 @@ We will need:
 * metadata files describing samples `metadata.txt` and comparisons `comparisons.txt` (examples can be found at `misc/metadata`)
 
 * read summarisation statistics at `PROJ_PREFIX/results/read_logs/log_stats.txt`
-
+ 
+ </br>
+ 
 We will copy the files / directories to one directory on the local system.
+
+Ideally, the copied directories are placed under one parent directory - the R script for report compilation is designed to work with data structure created after the pipeline run and statistical analysis by MAGeCK wrapper `6257_mageck_wrapper.sh`.
+
+The structure should be:
+
+
+```
+.
+├── count_table
+│   ├── 6257_shRNA_proc.counts.0rm.tsv
+│   ├── 6257_shRNA_proc.counts.0rm_noAlt.tsv
+│   └── 6257_shRNA_proc.counts.all.tsv
+├── library
+│   ├── SHPH01_LPhs_1-10.desc.nf.tsv
+│   └── SHPH01_LPhs_1-10.desc2.nf.tsv
+├── mageck
+│   ├── 0rm
+│   │   ├── M37_42_vs_ctrl
+│   │   │   ├── M37_42_vs_ctrl.R
+│   │   │   ├── M37_42_vs_ctrl.gene_summary.txt
+│   │   │   ├── M37_42_vs_ctrl.log
+│   │   │   ├── M37_42_vs_ctrl.pdf
+│   │   │   ├── M37_42_vs_ctrl.report.Rmd
+│   │   │   ├── M37_42_vs_ctrl.sgrna_summary.txt
+│   │   │   ├── M37_42_vs_ctrl_summary.Rnw
+│   │   │   ├── M37_42_vs_ctrl_summary.log
+│   │   │   └── M37_42_vs_ctrl_summary.pdf
+│   │   ├── M43_48_vs_M37_42
+│   │   └── M43_48_vs_ctrl
+│   ├── 0rm_noAlt
+│   │   ├── M37_42_vs_ctrl
+│   │   ├── M43_48_vs_M37_42
+│   │   └── M43_48_vs_ctrl
+│   ├── all
+│   │   ├── M37_42_vs_ctrl
+│   │   ├── M43_48_vs_M37_42
+│   │   └── M43_48_vs_ctrl
+│   ├── count_table_proc
+│   │   ├── 6257_shRNA_proc.counts
+│   │   ├── 6257_shRNA_proc.counts.0rm.tsv
+│   │   ├── 6257_shRNA_proc.counts.0rm_noAlt.tsv
+│   │   └── 6257_shRNA_proc.counts.all.tsv
+│   ├── library
+│   │   └── SHPH01_LPhs_1-10.desc2.nf.tsv
+├── metadata
+│   ├── comparisons.txt
+│   └── metadata.txt
+└── read_stats
+│       └── log_stats.txt
+
+```
+
+**Note**
+Files `metadata.txt` and `comparisons.txt` have to follow the structure as in examples.
+
+
+**OBS! This data structure is subject to change in the final version of the pipeline & MAGeCK wrapper. As we do this training on mock data, the instructions and the report script follow this temporary structure. I will post updated version of the R script when the final data is available.***
 
 
  </br>
