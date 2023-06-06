@@ -41,7 +41,7 @@ Example contents:
 
 	        shLibraryFa= "/proj/snic2022-23-410/nobackup/private/nbis6257/analysis/reference/shRNAlibrary/SHPH01_LPhs_1-10.desc.fa"
 
-	        annot= "/proj/snic2022-23-410/nobackup/private/nbis6257/analysis/reference/SHPH01_LPhs_1-10.saf"
+	        annot= "/proj/snic2022-23-410/nobackup/private/nbis6257/analysis/reference/shRNAlibrary/SHPH01_LPhs_1-10.saf"
 
 	        // adapters
 			    ada5="CGATTTCTTGGCTTTATATATCTTGTGGAAAGGACGAAACACCGG"
