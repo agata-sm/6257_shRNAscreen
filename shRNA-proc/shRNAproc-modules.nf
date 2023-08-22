@@ -129,6 +129,8 @@ process trim_readsPE {
 process mapPE {
     publishDir params.mapOut, mode:'copy'
     label 'big_mem'
+    cpus params.threads_bigmem
+
 
     input:
     tuple val(pair_id), path(r1), path(r2), path(idx_bowtie_ch)
@@ -138,7 +140,7 @@ process mapPE {
 
     script:
     """
-    bowtie2 -p 4 -a --very-sensitive --dovetail --fr -x shRNA_Idx_bowtie2 -q -1 $r1 -2 $r2  | samtools view -hbo ${pair_id}.mapped.bowtie2.bam -
+    bowtie2 -p ${params.threads_bigmem} -a --very-sensitive --dovetail --fr -x shRNA_Idx_bowtie2 -q -1 $r1 -2 $r2  | samtools view -hbo ${pair_id}.mapped.bowtie2.bam -
     """
 }
 
