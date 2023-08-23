@@ -130,6 +130,7 @@ process mapPE {
     publishDir params.mapOut, mode:'copy'
     label 'big_mem'
     cpus params.threads_bigmem
+    scratch true
 
 
     input:
@@ -140,7 +141,7 @@ process mapPE {
 
     script:
     """
-    bowtie2 -p ${params.threads_bigmem} -a --very-sensitive --dovetail --fr -x shRNA_Idx_bowtie2 -q -1 $r1 -2 $r2  | samtools view -hbo ${pair_id}.mapped.bowtie2.bam -
+    bowtie2 -p ${params.threads_bigmem} --quiet -a --very-sensitive --dovetail --fr -x shRNA_Idx_bowtie2 -q -1 $r1 -2 $r2  | samtools view -hbo ${pair_id}.mapped.bowtie2.bam -
     """
 }
 
