@@ -453,8 +453,10 @@ plot_pca_combined
 
 cnts_mat=reads.ctable
 rownames(cnts_mat)=cnts_mat$ProbeID
-cnts_mat_noctrl <- cnts_mat [, !grepl("OVCAR3",names(cnts_mat))]
-samples.tab.sub_noctrl=samples.tab.sub[!grepl("OVCAR3",samples.tab.sub$library),]
+
+ctrl_smpls=samples.tab.sub$library[samples.tab.sub$condition=="ctrl"]
+cnts_mat_noctrl <- cnts_mat [, !names(cnts_mat)%in%ctrl_smpls]
+samples.tab.sub_noctrl=samples.tab.sub[!samples.tab.sub$condition=="ctrl",]
 
 
 #shRNA
