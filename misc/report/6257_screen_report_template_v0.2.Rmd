@@ -118,7 +118,6 @@ This report was generated based on the following parameters:
 
 
 ## Data Processing
-## Data Processing
 
 * Data has been processed using shRNAseq pipeline installed from [shRNAscreen github repository](https://github.com/agata-sm/6257_shRNAscreen).
 
@@ -367,13 +366,14 @@ overcome this, PCA was computed for counts summarised per gene (as sum of shRNA 
 ```
 
 
-As all non-ctrl samples teneded to group toghtly together on the PCA plots containing all samples, to gain more insight into their differences, the control samples (i.e. OVCAR3-ctN) were removed from the PCA analysis.
-
 
 
 ```{r pca_no_ctrls, echo=FALSE, include=FALSE}
 
 ```
+
+As all non-ctrl samples teneded to group toghtly together on the PCA plots containing all samples, to gain more insight into their differences, the control samples (i.e. `r ctrl_smpls`) were removed from the PCA analysis.
+
 
 
 ```{r pca-plot-noctrls, dev='png', echo=FALSE, fig.show='show',fig.dim=c(12, 6), cache=FALSE, fig.cap="PCA on read counts summarised per shRNA (A) and gene (B). Control samples were removed from the analysis."}
@@ -407,9 +407,6 @@ pairwise sample correlations. Rank based Spearman correlation coefficients betwe
 <br />
 <br />
 <br />
-
-
-# Comments
 
 
 
@@ -459,35 +456,6 @@ Fields specific to **negative** selection are prefixed with `neg`.
 
 Please also refer to [MAGeCK documentation](https://sourceforge.net/p/mageck/wiki/output/#gene_summary_txt) for format specification.
 
-
-
-
-<!-- <br />
-**Results of GSEA** in files `Table.N.GSEA.GO.COMPARISON.SELECTION.tsv` and `Table.N.GSEA.reactome.COMPARISON.SELECTION.tsv`. This is a table with GSEA results. Each row corresponds to a tested pathway, only pathways enriched above the significance threshold are shown.
-
-
-* `ONTOLOGY` not available for reactome analysis
-
-* `ID` of category (internal to database)
-
-* `Description` of category gene set
-
-* `setSize`  size of the gene set after removing genes not present in the data
-
-* `enrichmentScore` GSEA enrichment score, same as in Broad GSEA implementation
-
-* `NES` enrichment score normalized to mean enrichment of random samples of the same size
-
-* `pvalue`  p value from the GSEA test, as implemented in R package `fgsea`
-
-* `p.adjust` p value adjusted for multiple comparisons (FDR)
-
-* `qvalues` the proportion of false positives incurred 
-
-* `leading_edge` leading-edge subset in a gene set are those genes that appear in the ranked list at or before the point at which the running sum reaches its maximum deviation from zero; the leading-edge subset can be interpreted as the core that accounts for the gene set’s enrichment signal
-
-* `core_enrichment` genes that contribute to the leading-edge subset within the gene set; this is the subset of genes that contributes most to the enrichment result for given pathway
- -->
 
 
 <br />
@@ -542,29 +510,6 @@ source: [R-bloggers](https://www.r-bloggers.com/2021/11/how-to-make-stunning-box
 <br />
 <br />
 
-<!-- 
-## GSEA plot
 
-
-![GSEA plot schematic](graphics/Gsea.jpg)
-
-
-The primary result of the gene set enrichment analysis is the enrichment score (ES), which reflects the degree to which a gene set is overrepresented at the top or bottom of a ranked list of genes. GSEA calculates the ES by walking down the ranked list of genes, increasing a running-sum statistic when a gene is in the gene set and decreasing it when it is not. The magnitude of the increment depends on the correlation of the gene with the phenotype. The ES is the maximum deviation from zero encountered in walking the list. A positive ES indicates gene set enrichment at the top of the ranked list; a negative ES indicates gene set enrichment at the bottom of the ranked list.
-
-In the analysis results, the enrichment plot provides a graphical view of the enrichment score for a gene set:
-
-
-* The top portion of the plot shows the running ES for the gene set as the analysis walks down the ranked list. The score at the peak of the plot (the score furthest from 0.0) is the ES for the gene set. Gene sets with a distinct peak at the beginning (such as the one shown here) or end of the ranked list are generally the most interesting.
-
-* The middle portion of the plot shows where the members of the gene set appear in the ranked list of genes. **The leading edge subset** of a gene set is the subset of members that contribute most to the ES. For a positive ES (such as the one shown here), the leading edge subset is the set of members that appear in the ranked list prior to the peak score. For a negative ES, it is the set of members that appear subsequent to the peak score.
-
-* The bottom portion of the plot shows the value of the ranking metric as you move down the list of ranked genes. The ranking metric measures a gene’s correlation with a phenotype. The value of the ranking metric goes from positive to negative as you move down the ranked list. A positive value indicates correlation with the first phenotype and a negative value indicates correlation with the second phenotype. For continuous phenotypes (time series or gene of interest), a positive value indicates correlation with the phenotype profile and a negative value indicates no correlation or inverse correlation with the profile.
-
-The ranking metric used in this analysis is -log10 of positive / negative RRA score.
-
-For more deatils please refer to the source of this text [GSEA User Guide](https://www.gsea-msigdb.org/gsea/doc/GSEAUserGuideFrame.html).
- -->
-<br />
-<br />
 
 
