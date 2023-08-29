@@ -52,7 +52,7 @@ outdir="/crex/proj/snic2022-23-410/nobackup/private/nbis6257/analysis/OVSAHO/mag
 # name
 contrast1="M19_24_vs_M13_18"
 # samples in each group
-control1="M13,M14,M15,M16,M17,M18"
+control1="M13,M14,M15,M17,M18"
 treated1="M19,M20,M21,M22,M23,M24"
 
 
@@ -62,7 +62,7 @@ treated1="M19,M20,M21,M22,M23,M24"
 contrast2="M13_18_vs_ctrl"
 # samples in each group
 control2="OVSAHOCT2,OVSAHOCT3"
-treated2="M13,M14,M15,M16,M17,M18"
+treated2="M13,M14,M15,M17,M18"
 
 
 ### contrast3
