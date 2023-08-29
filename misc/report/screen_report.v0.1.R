@@ -114,6 +114,7 @@ all_genes=length(unique(library_desc$id))
 
 seqstats$sample=factor(seqstats$sample, levels=samples.tab$library)
 
+
 seqstats$frac_aln_passed=format(round(as.numeric(seqstats$alignments_mapq255_mismatch/seqstats$alignments),3), nsmall=0, big.mark=",")
 seqstats$frac_tot_passed=format(round(as.numeric(seqstats$alignments_mapq255_mismatch/seqstats$all_read_pairs),3), nsmall=0, big.mark=",")
 seqstats$frac_trimmed=format(round(as.numeric(seqstats$trimmed_read_pairs/seqstats$all_read_pairs),3), nsmall=0, big.mark=",")
@@ -122,6 +123,7 @@ seqstats$frac_mapq255=format(round(as.numeric(seqstats$alignments_mapq255/seqsta
 #formatted numbers for table
 seqstats.tab=seqstats[,c(1:6)]
 
+seqstats.tab$condition=samples.tab$condition
 
 seqstats.tab$all_read_pairs=format(round(as.numeric(seqstats.tab$all_read_pairs), 0), nsmall=0, big.mark=",")
 seqstats.tab$trimmed_read_pairs=format(round(as.numeric(seqstats.tab$trimmed_read_pairs), 0), nsmall=0, big.mark=",")
@@ -134,7 +136,7 @@ seqstats.tab$alignments_mapq255=paste0(seqstats.tab$alignments_mapq255," (",seqs
 seqstats.tab$alignments_mapq255_mismatch=paste0(seqstats.tab$alignments_mapq255_mismatch," (",seqstats$frac_tot_passed,")")
 
 
-colnames(seqstats.tab)=c("sample","all read pairs","trimmed read pairs","alignments","high score alignments","high score alignments passing mismatch filter")
+colnames(seqstats.tab)=c("sample" ,"all read pairs","trimmed read pairs","alignments","high score alignments","high score alignments passing mismatch filter", "condition")
 
 
 ## ---- data-mapstats-table
