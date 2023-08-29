@@ -28,7 +28,7 @@ comparisons.file=file.path(metadata.dir,"comparisons.txt")
 samples.file=file.path(metadata.dir,"metadata.txt")
 
 #indata dirs
-mageck_datadir=file.path(mageck.dir,setup)
+#mageck_datadir=file.path(mageck.dir,setup)
 ctable_datadir=file.path(data.dir,"count_table_processed")
 
 #infile

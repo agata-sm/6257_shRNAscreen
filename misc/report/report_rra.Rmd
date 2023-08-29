@@ -26,10 +26,10 @@ source("./shRNA_screen_report_functions.R")
 ### Comparison: `r i` {.tabset}
 
 ```{r include=FALSE,cache=FALSE}
-indir.i=file.path(mageck_datadir,i)
+indir.i=file.path(mageck.dir,paste(proj.name.pref,i,sep="."),setup)
 
-infile.pth.gene.i=file.path(indir.i,paste(i,"gene_summary.txt",sep="."))
-infile.pth.sgRNA.i=file.path(indir.i,paste(i,"sgrna_summary.txt",sep="."))
+infile.pth.gene.i=file.path(indir.i,paste(proj.name.pref,i,setup,"gene_summary.txt",sep="."))
+infile.pth.sgRNA.i=file.path(indir.i,paste(proj.name.pref,i,setup,"sgrna_summary.txt",sep="."))
 
 gdata_i_lfc = ReadRRA(infile.pth.gene.i,score="lfc")
 gdata_i_RRA = ReadRRA(infile.pth.gene.i,score="RRA")
