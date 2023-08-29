@@ -81,6 +81,24 @@ source("./shRNA_screen_report_functions.R")
 *Schematics with explanation of some plots can be found in the Appendix.*
 
 
+This report was generated based on the following parameters:
+
+* project directory: `r proj.dir`
+
+* project name: `r proj.name.pref`
+
+* data directory (processing pipeline output): `r data.dir`
+
+* metadata directory: `r metadata.dir`
+
+* library annotation: `r library`
+
+* results of RRA snalysis by MAGeCK: `r mageck.dir`
+
+* mageck analysis mode: `r setup`
+
+
+
 
 # Contents
 
