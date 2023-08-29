@@ -4,8 +4,8 @@
 #SBATCH -n 4
 #SBATCH -t 14:00:00
 #SBATCH -J mageck_8
-#SBATCH -o mageck.ovcar8.22viii2023.out
-#SBATCH -e mageck.ovcar8.22viii2023.out
+#SBATCH -o mageck.ovcar8.29viii2023.out
+#SBATCH -e mageck.ovcar8.29viii2023.out
 
 
 module load bioinfo-tools
@@ -50,7 +50,7 @@ outdir="/crex/proj/snic2022-23-410/nobackup/private/nbis6257/analysis/OVCAR8/mag
 ### contrast1
 
 # name
-contrast1="M2_5_vs_M6_12"
+contrast1="M7_12_vs_M2_6"
 # samples in each group
 control1="M2,M3,M4,M5,M6"
 treated1="M7,M8,M9,M10,M11,M12"
@@ -59,18 +59,18 @@ treated1="M7,M8,M9,M10,M11,M12"
 ### contrast2
 
 # name
-contrast2="M2_5_vs_ctrl"
+contrast2="M2_6_vs_ctrl"
 # samples in each group
-control2="OVCAR8-ct1,OVCAR8-ct2,OVCAR8-ct3"
+control2="OVCAR8_ct1,OVCAR8_ct2,OVCAR8_ct3"
 treated2="M2,M3,M4,M5,M6"
 
 
 ### contrast3
 
 # name
-contrast3="M43_48_vs_ctrl"
+contrast3="M7_12_vs_ctrl"
 # samples in each group
-control3="OVCAR8-ct1,OVCAR8-ct2,OVCAR8-ct3"
+control3="OVCAR8_ct1,OVCAR8_ct2,OVCAR8_ct3"
 treated3="M7,M8,M9,M10,M11,M12"
 
 

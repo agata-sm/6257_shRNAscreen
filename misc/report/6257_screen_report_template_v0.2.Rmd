@@ -196,10 +196,13 @@ This plot is saved as **`r fname`**.
 
 <br />
 
-```{r data-mapstats-table, echo=FALSE ,results='asis'}
+```{r data-samples-table, echo=FALSE ,results='asis'}
 
 ```
 
+```{r data-mapstats-table, echo=FALSE ,results='asis'}
+
+```
 
 
 

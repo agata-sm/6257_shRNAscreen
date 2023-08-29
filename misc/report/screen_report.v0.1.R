@@ -103,6 +103,10 @@ mycolour = c('ns'="gray80", 'dn'= "#377eb8", 'up'="#e41a1c")
 samples.tab=read.table(samples.file, sep="\t", header=TRUE, blank.lines.skip=TRUE)
 samples.tab$library=samples.tab$sample
 
+
+samples.tab.tab=samples.tab[names(samples.tab)%in%c("sample","condition")]
+
+
 file.seqstats=file.path(data.dir,"read_logs","log_stats.txt")
 seqstats=read.delim(file.seqstats, header = TRUE, sep = "\t", quote = "\"", dec = ".", fill = TRUE, row.names=NULL)
 
@@ -123,8 +127,6 @@ seqstats$frac_mapq255=format(round(as.numeric(seqstats$alignments_mapq255/seqsta
 #formatted numbers for table
 seqstats.tab=seqstats[,c(1:6)]
 
-seqstats.tab$condition=samples.tab$condition
-
 seqstats.tab$all_read_pairs=format(round(as.numeric(seqstats.tab$all_read_pairs), 0), nsmall=0, big.mark=",")
 seqstats.tab$trimmed_read_pairs=format(round(as.numeric(seqstats.tab$trimmed_read_pairs), 0), nsmall=0, big.mark=",")
 seqstats.tab$alignments=format(round(as.numeric(seqstats.tab$alignments), 0), nsmall=0, big.mark=",")
@@ -136,7 +138,10 @@ seqstats.tab$alignments_mapq255=paste0(seqstats.tab$alignments_mapq255," (",seqs
 seqstats.tab$alignments_mapq255_mismatch=paste0(seqstats.tab$alignments_mapq255_mismatch," (",seqstats$frac_tot_passed,")")
 
 
-colnames(seqstats.tab)=c("sample" ,"all read pairs","trimmed read pairs","alignments","high score alignments","high score alignments passing mismatch filter", "condition")
+colnames(seqstats.tab)=c("sample" ,"all read pairs","trimmed read pairs","alignments","high score alignments","high score alignments passing mismatch filter")
+
+## ---- data-samples-table
+knitr::kable(samples.tab.tab, row.names = FALSE, caption = "Samples included in this analysis.")
 
 
 ## ---- data-mapstats-table

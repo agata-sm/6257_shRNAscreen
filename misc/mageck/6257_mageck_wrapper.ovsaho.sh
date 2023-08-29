@@ -4,8 +4,8 @@
 #SBATCH -n 4
 #SBATCH -t 14:00:00
 #SBATCH -J mageck_ovsh
-#SBATCH -o mageck.ovsaho.22viii2023.out
-#SBATCH -e mageck.ovsaho.22viii2023.out
+#SBATCH -o mageck.ovsaho.29viii2023.out
+#SBATCH -e mageck.ovsaho.29viii2023.out
 
 
 module load bioinfo-tools
@@ -50,7 +50,7 @@ outdir="/crex/proj/snic2022-23-410/nobackup/private/nbis6257/analysis/OVSAHO/mag
 ## contrast1
 
 # name
-contrast1="M13_18_vs_M19_24"
+contrast1="M19_24_vs_M13_18"
 # samples in each group
 control1="M13,M14,M15,M16,M17,M18"
 treated1="M19,M20,M21,M22,M23,M24"

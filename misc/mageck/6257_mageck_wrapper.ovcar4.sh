@@ -50,7 +50,7 @@ outdir="/crex/proj/snic2022-23-410/nobackup/private/nbis6257/analysis/OVCAR4/mag
 ## contrast1
 
 # name
-contrast1="M25_30_vs_M31_36"
+contrast1="M31_36_vs_M25_30"
 # samples in each group
 control1="M25,M26,M27,M28,M29,M30"
 treated1="M31,M32,M33,M34,M35,M36"
@@ -71,7 +71,7 @@ treated2="M25,M26,M27,M28,M29,M30"
 contrast3="M31_36_vs_ctrl"
 # samples in each group
 control3="OVCAR4CT1,OVCAR4CT2,OVCAR4CT3"
-treated3="M25,M26,M27,M28,M29,M30"
+treated3="M31,M32,M33,M34,M35,M36"
 
 
 
