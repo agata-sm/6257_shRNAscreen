@@ -209,6 +209,7 @@ colnames(detguides_table)=c("sample","detected_shRNA","Gini_idx")
 
 samples.tab.sub=samples.tab
 samples.tab.sub$library=gsub("-","." , as.character(samples.tab.sub$library) )
+samples.tab.sub$library=gsub("_","." , as.character(samples.tab.sub$library) )
 
 detguides_table_ord=detguides_table %>% arrange(factor(detguides_table$sample, levels=samples.tab.sub$library))
 colnames(detguides_table_ord)=c("sample","detected shRNAs","Gini index")
