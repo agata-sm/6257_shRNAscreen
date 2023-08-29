@@ -148,7 +148,7 @@ Fields in the table:
 * `log2FC` (`lfc` in the source file) gene level log2(fold change)
 
 
-Fields specific to **negative** selection are prefixed with `neg` in the source table `r ctable_fname`.
+Fields specific to **negative** selection are prefixed with `neg` in the source table `r infile.pth.gene.i`.
 
 
 <br />
@@ -199,7 +199,7 @@ Fields in the table:
 * `log2FC` (`lfc` in the source file) gene level log2(fold change)
 
 
-Fields specific to **positive** selection are prefixed with `pos` in the source table `r ctable_fname`.
+Fields specific to **positive** selection are prefixed with `pos` in the source table `r infile.pth.gene.i`.
 
 
 
@@ -328,7 +328,6 @@ p4_v1=ggplotly(p4_v1, tooltip=c("text"))
 
 
 Gene rank plot depicts the relationship of gene rank and its fold change in treatment vs control (presented as log2(fold change), log2FC).
-#Please note only genes with FDR<=0.8 are plotted (n=`r nrow(dat_plot)`).
 
 
 This plot is interactive. Its static version is saved in file `r fname`.
