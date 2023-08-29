@@ -208,8 +208,10 @@ detguides_table=cbind(detguides_table,gini_idx)
 colnames(detguides_table)=c("sample","detected_shRNA","Gini_idx")
 
 samples.tab.sub=samples.tab
+
 samples.tab.sub$library=gsub("-","." , as.character(samples.tab.sub$library) )
 samples.tab.sub$library=gsub("_","." , as.character(samples.tab.sub$library) )
+
 
 detguides_table_ord=detguides_table %>% arrange(factor(detguides_table$sample, levels=samples.tab.sub$library))
 colnames(detguides_table_ord)=c("sample","detected shRNAs","Gini index")
@@ -295,6 +297,7 @@ s.treated=samples.tab$library[samples.tab$condition=="treated"]
 s.untreated=samples.tab$library[samples.tab$condition=="untreated"]
 s.ctrl=samples.tab$library[samples.tab$condition=="ctrl"]
 s.ctrl=gsub("-",".",s.ctrl)
+s.ctrl=gsub("_",".",s.ctrl)
 
 
 ctrl=as.tibble(data_reads_bygene)%>%rowwise(GeneID)%>%dplyr::select(all_of(s.ctrl))
