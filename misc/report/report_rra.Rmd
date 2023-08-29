@@ -269,7 +269,6 @@ It enables quick visual identification of genes with large fold changes that are
 
 The results of abundance analysis at the gene level are visualised on the interactive volcano plot where the statistically significant genes
 (FDR<=0.05) are coloured. 
-#Please note only genes with FDR<=0.8 are plotted (n=`r nrow(dat_plot)`).
 
 
 This plot is saved as a static plot in file

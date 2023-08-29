@@ -170,9 +170,9 @@ This report has been generated using setup **`r setup`**.
 
 ## Library Summary Statistics <a name="sumstat"></a>
 
+Sample grouping is summarised in Table \@ref(tab:data-samples-table).
 
 Plots for library statistics and summary of quantification of shRNA levels. These are diagnostic plots which help to evaluate the read processing of the libraries in the screen and may help to flag potentially low quality libraries. 
-
 
 
 Summary of read processing and assignment to shRNAs in all libraries is presented on Figure \@ref(fig:map-stats-plot) and in Table \@ref(tab:data-mapstats-table).
@@ -213,11 +213,12 @@ This plot is saved as **`r fname`**.
 
 ## shRNA coverage
 
-This is count table part.
 
 ```{r count-table, include = FALSE}
 
 ```
+
+This part is based on counts table `r ctable.pth`.
 
 
 Read pairs mapped to shRNAs after alignment filtering are summarised in Table \@ref(tab:shRNA-stats-table). Expressed shRNAs are shRNAs with at least 1 assigned alignment.
