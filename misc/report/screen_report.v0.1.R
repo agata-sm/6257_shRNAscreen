@@ -176,6 +176,9 @@ dev.off()
 ctable.pth=file.path(ctable_datadir,ctable_fname)
 reads.ctable=read.delim(ctable.pth, header = TRUE, sep = "\t", quote = "\"",dec = ".", fill = TRUE, row.names=NULL)
 
+colnames(reads.ctable)=gsub("-","." , as.character(colnames(reads.ctable)) )
+colnames(reads.ctable)=gsub("_","." , as.character(colnames(reads.ctable)) )
+
 dat_reads_h = gather(reads.ctable[,-2], variable, value,-ProbeID)
 
 #dat_reads_h_ord=dat_reads_h
