@@ -29,7 +29,7 @@ indir="/proj/snic2022-23-410/nobackup/private/nbis6257/analysis/OVSAHO/6257_shRN
 
 
 ### identical to projname in nextflow run.config; PROJ in the file names above
-project_prefix="6257_shRNA_proc_OVCAR3"
+project_prefix="6257_shRNA_proc_OVSAHO"
 
 
 

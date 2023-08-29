@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH -A snic2022-22-783
+#SBATCH -A naiss2023-22-87
 #SBATCH -p core
 #SBATCH -n 4
 #SBATCH -t 14:00:00
@@ -29,7 +29,7 @@ indir="/proj/snic2022-23-410/nobackup/private/nbis6257/analysis/OVCAR4/6257_shRN
 
 
 ### identical to projname in nextflow run.config; PROJ in the file names above
-project_prefix="6257_shRNA_proc_OVCAR3"
+project_prefix="6257_shRNA_proc_OVCAR4"
 
 
 
