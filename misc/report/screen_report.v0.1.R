@@ -5,40 +5,34 @@
 
 #### IMPORTANT!
 
-#### VARIABLES TO DEFINE IN CLI >>>> not used in this version
+#### VARIABLES TO DEFINE IN CLI
 #proj.dir
 #proj.name.pref
 #data.dir
+#mageck.dir
+#metadata.dir
+#setup="all"### change!!! all 0rm 0rm_noAlt
+#library
 
-#Rscript report_launcher.R  proj.dir proj.name.pref data.type organism &> reads.report.stderrout
+
+#Rscript report_launcher.R  proj.dir proj.name.pref data.dir mageck.dir metadata.dir setup library &> ovcar3.report.stderrout
 #OBS! positional arguments
 
 
-## ---- not_run1
-
-# defined for interactive compilation
-data.dir="/Users/agata.smialowska/NBISproj/6257_shRNA/analysis/R/report_data"
-proj.dir="/Users/agata.smialowska/NBISproj/6257_shRNA/analysis/R/report_final_ovcar3"
-proj.name.pref="6257_preliminary_report"
-
-source(file.path(proj.dir,"shRNA_screen_report_functions.R"))
-
-library.fname="SHPH01_LPhs_1-10.desc2.nf.tsv"
 
 ## ---- dirs
 
 
 #metadata
-comparisons.file=file.path(data.dir,"metadata","comparisons.txt")
-samples.file=file.path(data.dir,"metadata","metadata.txt")
+comparisons.file=file.path(metadata.dir,"comparisons.txt")
+samples.file=file.path(metadata.dir,"metadata.txt")
 
 #indata dirs
-setup="all"### change!!! all 0rm 0rm_noAlt
-mageck_datadir=file.path(data.dir,"mageck",setup)
-ctable_datadir=file.path(data.dir,"count_table")
+mageck_datadir=file.path(mageck.dir,setup)
+ctable_datadir=file.path(data.dir,"count_table_processed")
 
-#to be redefined for automated compilation
-ctable_fname=paste("6257_shRNA_proc.counts",setup,"tsv",sep=".")
+#infile
+ctable_fname=paste(proj.name.pref,"counts_processed",setup,"tsv",sep=".")
 
 
 #results dir
@@ -48,6 +42,7 @@ dir.create(resdir, recursive = TRUE)
 
 plotdir=file.path(resdir,"plots")
 dir.create(plotdir)
+
 
 
 ## ---- prep_environment
@@ -108,15 +103,14 @@ mycolour = c('ns'="gray80", 'dn'= "#377eb8", 'up'="#e41a1c")
 samples.tab=read.table(samples.file, sep="\t", header=TRUE, blank.lines.skip=TRUE)
 samples.tab$library=samples.tab$sample
 
-file.seqstats=file.path(data.dir,"read_stats","log_stats.txt")
+file.seqstats=file.path(data.dir,"read_logs","log_stats.txt")
 seqstats=read.delim(file.seqstats, header = TRUE, sep = "\t", quote = "\"", dec = ".", fill = TRUE, row.names=NULL)
 
-library.file=file.path(data.dir,"library",library.fname)
-library_desc=read.delim(library.file, header = FALSE, sep = "\t", quote = "\"", fill = TRUE, row.names=NULL,colClasses = "character",blank.lines.skip=TRUE)
+library_desc=read.delim(library, header = FALSE, sep = "\t", quote = "\"", fill = TRUE, row.names=NULL,colClasses = "character",blank.lines.skip=TRUE)
 colnames(library_desc)=c("cloneId","targetSeq","oligoSeq","cloneName","region","id","NCBI_geneId","symbol","geneDesc","refseqSameGene","refseqAltGeneSameSpecies","refseqAltSpecies")
 
 all_probes=nrow(library_desc)
-all_genes=length(unique(library_desc$V6))
+all_genes=length(unique(library_desc$id))
 
 seqstats$sample=factor(seqstats$sample, levels=samples.tab$library)
 

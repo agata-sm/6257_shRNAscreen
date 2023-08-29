@@ -68,19 +68,6 @@ source("./shRNA_screen_report_functions.R")
 ```
 
 
-```{r not_run1, include=FALSE,cache=FALSE}
-data.dir="/Users/agata.smialowska/NBISproj/6257_shRNA/analysis/R/report_data"
-proj.dir="/Users/agata.smialowska/NBISproj/6257_shRNA/analysis/R/report_final_ovcar3"
-proj.name.pref="6257_preliminary_report"
-
-source(file.path(proj.dir,"shRNA_screen_report_functions.R"))
-
-library.fname="SHPH01_LPhs_1-10.desc.nf.tsv"
-
-```
-
-
-
 ```{r dirs, include=FALSE,cache=FALSE}
 
 ```
