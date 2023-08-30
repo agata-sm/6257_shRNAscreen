@@ -96,7 +96,7 @@ rep.g_neg=rep.g_neg[order(rep.g_neg$neg.rank, decreasing=FALSE),]
 rep.g_pos=rep.g_pos[order(rep.g_pos$pos.rank, decreasing=FALSE),]
 
 tab_n_sv=tab_n_sv+1
-fname=paste("Table",tab_n_sv,"RRA_mageck",i,"tsv",sep=".")
+fname=paste("Table",tab_n_sv,"RRA_mageck",i,setup,"tsv",sep=".")
 save.table(df=rep.g.i.annot, file=fname, dir=resdir.i)
 ```
 
@@ -249,7 +249,7 @@ figurecap=paste("Volcano plot for comparison ",i,". Genes with changes at FDR be
 
 
 fig_n=fig_n+1
-fname=paste("Figure",fig_n,"Volcano",i,"pdf",sep=".")
+fname=paste("Figure",fig_n,"Volcano",i,setup,"pdf",sep=".")
 pdf(file.path(plotdir.i,fname))
 p_v1 + ggtitle(figurecap)
 dev.off()
@@ -316,7 +316,7 @@ figurecap=paste("Gene rank plot for comparison ",i,". Genes with changes at FDR 
 
 
 fig_n=fig_n+1
-fname=paste("Figure",fig_n,"GeneRank",i,"pdf",sep=".")
+fname=paste("Figure",fig_n,"GeneRank",i,setup,"pdf",sep=".")
 pdf(file.path(plotdir.i,fname))
 p4_v1+ ggtitle(figurecap)
 dev.off()
@@ -385,11 +385,11 @@ figurecap2=paste("shRNA ranks for comparison ",i,".\nTop genes in positive selec
 
   graphics.off()
   fig_n=fig_n+1
-  ggsave(filename=paste("Figure",fig_n,"shRNA_ranks_positive",i,"pdf",sep="."),plot=p2.4,path=plotdir.i,device="pdf")
+  ggsave(filename=paste("Figure",fig_n,"shRNA_ranks_positive",i,setup,"pdf",sep="."),plot=p2.4,path=plotdir.i,device="pdf")
 
   graphics.off()
   fig_n=fig_n+1
-  ggsave(filename=paste("Figure",fig_n,"shRNA_ranks_negative",i,"pdf",sep="."),plot=p2.3,path=plotdir.i,device="pdf")
+  ggsave(filename=paste("Figure",fig_n,"shRNA_ranks_negative",i,setup,"pdf",sep="."),plot=p2.3,path=plotdir.i,device="pdf")
 
 
 ```

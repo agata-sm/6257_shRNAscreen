@@ -40,7 +40,7 @@ resdir=file.path(proj.dir,"results",setup,"rra_annotation")
 #resdir=file.path("results","rra_annotation")
 dir.create(resdir, recursive = TRUE)
 
-plotdir=file.path(resdir,"plots")
+plotdir=file.path(proj.dir,"results",setup,"plots")
 dir.create(plotdir)
 
 
@@ -241,7 +241,7 @@ box_reads_shRNA=ggplot(dat_reads_h, aes(x=variable, y=value, color=variable))  +
 
 
 fig_n=fig_n+1
-fname=paste("Figure",fig_n,"reads_per_shRNA_boxplot.pdf",sep=".")
+fname=paste("Figure",fig_n,setup,"reads_per_shRNA_boxplot.pdf",sep=".")
 pdf(file.path(plotdir,fname))
 box_reads_shRNA + 
   theme(aspect.ratio = 1) + theme(plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm"))  + 
@@ -276,7 +276,7 @@ reads_per_shRNA_hist=ggplot(dat_reads_h, aes(x=value)) + geom_histogram(binwidth
 
 
 fig_n=fig_n+1
-fname=paste("Figure",fig_n,"reads_per_shRNA_histogram.pdf",sep=".")
+fname=paste("Figure",fig_n,setup,"reads_per_shRNA_histogram.pdf",sep=".")
 pdf(file.path(plotdir,fname))
 reads_per_shRNA_hist + 
   theme(aspect.ratio = 1) + theme(plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm"))  + 
@@ -334,7 +334,7 @@ exprs.venn_plot=ggVennDiagram(exprs.venn) +
  theme(legend.position="bottom")
 
 fig_n=fig_n+1
-fname=paste("Figure",fig_n,"detected_genes_venn.pdf",sep=".")
+fname=paste("Figure",fig_n,setup,"detected_genes_venn.pdf",sep=".")
 pdf(file.path(plotdir,fname))
 exprs.venn_plot + 
   theme(aspect.ratio = 1) + theme(plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm"))  + 
@@ -451,7 +451,7 @@ plot_pca_combined=plot_grid(plot_grid(pca1, pca2, ncol=2, labels=LETTERS[1:2]),
 
 
 fig_n=fig_n+1
-ggsave(filename=paste("Figure",fig_n,"PCA.pdf",sep="."),path=plotdir,device="pdf", plot=plot_pca_combined)
+ggsave(filename=paste("Figure",fig_n,setup,"PCA.pdf",sep="."),path=plotdir,device="pdf", plot=plot_pca_combined)
 
 
 ## ---- pca-plot
@@ -533,7 +533,7 @@ plot_pca_combined_noctrl=plot_grid(plot_grid(pca1, pca2, ncol=2, labels=LETTERS[
 
 
 fig_n=fig_n+1
-ggsave(filename=paste("Figure",fig_n,"PCA_noctrl.pdf",sep="."),path=plotdir,device="pdf", plot=plot_pca_combined_noctrl)
+ggsave(filename=paste("Figure",fig_n,setup,"PCA_noctrl.pdf",sep="."),path=plotdir,device="pdf", plot=plot_pca_combined_noctrl)
 
 
 ## ---- pca-plot-noctrls
@@ -551,7 +551,7 @@ cor_hm_gene=plot_corr_hm(corr_matirx=smpl_corr_gene)
 
 
 fig_n=fig_n+1
-fname=paste("Figure",fig_n,"SpearmanCorrHeatmaps.pdf",sep=".")
+fname=paste("Figure",fig_n,setup,"SpearmanCorrHeatmaps.pdf",sep=".")
 pdf(file.path(plotdir,fname))
 
 cor_hm_gene +theme(aspect.ratio = 1) + theme(plot.margin = unit(c(0, 0, 0, 0), "cm"))  + 
@@ -625,7 +625,7 @@ for (i in c(1:contrasts.pairs.number)){
   pl2.d=pl2+geom_point(aes(df_scatter[,4], df_scatter[,5], color = density)) + scale_color_viridis()
 
   fig_n=fig_n+1
-  ggsave(filename=paste("Figure",fig_n,"log2FCscatterplot",colnames(df_scatter)[2],colnames(df_scatter)[3],"comparison",i,"pdf",sep="."),path=plotdir,device="pdf")
+  ggsave(filename=paste("Figure",fig_n,setup,"log2FCscatterplot",colnames(df_scatter)[2],colnames(df_scatter)[3],"comparison",i,"pdf",sep="."),path=plotdir,device="pdf")
 
 
   pl2_int=ggplotly(pl2.d, tooltip=c("text"))
